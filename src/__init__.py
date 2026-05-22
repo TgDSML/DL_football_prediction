@@ -1,0 +1,1 @@
+"""Football match prediction package."""

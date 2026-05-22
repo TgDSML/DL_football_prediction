@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Packaging and build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+.tmp/
+
+# Data and generated outputs
+data/raw/*
+data/interim/*
+data/processed/*
+outputs/models/*
+outputs/plots/*
+outputs/results/*
+outputs/logs/*
+
+# Keep directory placeholders
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!outputs/models/.gitkeep
+!outputs/plots/.gitkeep
+!outputs/results/.gitkeep
+!outputs/logs/.gitkeep
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

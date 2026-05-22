@@ -1,0 +1,30 @@
+project:
+  name: football_match_prediction
+  seed: 42
+
+data:
+  raw_path: data/raw/matches.csv
+  processed_path: data/processed/matches_processed.csv
+  sequence_length: 5
+  target_column: result
+
+training:
+  model_type: lstm
+  epochs: 5
+  batch_size: 32
+  learning_rate: 0.001
+  validation_size: 0.2
+  test_size: 0.1
+
+model:
+  input_size: 16
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  num_classes: 3
+
+outputs:
+  model_dir: outputs/models
+  plots_dir: outputs/plots
+  results_dir: outputs/results
+  logs_dir: outputs/logs
