@@ -35,6 +35,7 @@ outputs/logs/*
 
 # Keep directory placeholders
 !data/raw/.gitkeep
+!data/raw/*.csv
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 !outputs/models/.gitkeep
