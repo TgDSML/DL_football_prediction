@@ -23,6 +23,7 @@ dist/
 .env.*
 !.env.example
 .tmp/
+premvenv
 
 # Data and generated outputs
 data/raw/*
@@ -48,3 +49,7 @@ outputs/logs/*
 Thumbs.db
 .vscode/
 .idea/
+
+splits
+premier-league
+
