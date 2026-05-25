@@ -27,9 +27,6 @@ premvenv
 
 # Data and generated outputs
 data/raw/*
-data/interim/*
-data/processed/*
-outputs/models/*
 outputs/plots/*
 outputs/results/*
 outputs/logs/*
@@ -52,4 +49,5 @@ Thumbs.db
 
 splits
 premier-league
-
+*csv
+*.joblib
