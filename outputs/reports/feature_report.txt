@@ -1,0 +1,217 @@
+Football Prediction Split Inspection
+============================================
+
+[train]
+Shape: 6460 rows x 23 columns
+Date range: 2000-08-19 to 2017-05-21
+
+Columns:
+Date, HomeTeam, AwayTeam, FTHG, FTAG, FTR, HTHG, HTAG, HTR, Referee, HS, AS, HST, AST, HF, AF, HC, AC, HY, AY, HR, AR, season
+
+Dtypes:
+Date        datetime64[us]
+HomeTeam               str
+AwayTeam               str
+FTHG                 int64
+FTAG                 int64
+FTR                    str
+HTHG                 int64
+HTAG                 int64
+HTR                    str
+Referee                str
+HS                   int64
+AS                   int64
+HST                  int64
+AST                  int64
+HF                   int64
+AF                   int64
+HC                   int64
+AC                   int64
+HY                   int64
+AY                   int64
+HR                   int64
+AR                   int64
+season               int64
+
+Missing values:
+Date        0
+HomeTeam    0
+AwayTeam    0
+FTHG        0
+FTAG        0
+FTR         0
+HTHG        0
+HTAG        0
+HTR         0
+Referee     0
+HS          0
+AS          0
+HST         0
+AST         0
+HF          0
+AF          0
+HC          0
+AC          0
+HY          0
+AY          0
+HR          0
+AR          0
+season      0
+
+Target distribution (FTR):
+FTR
+A    1805
+D    1652
+H    3003
+
+
+[val]
+Shape: 1520 rows x 23 columns
+Date range: 2017-08-11 to 2021-05-23
+
+Columns:
+Date, HomeTeam, AwayTeam, FTHG, FTAG, FTR, HTHG, HTAG, HTR, Referee, HS, AS, HST, AST, HF, AF, HC, AC, HY, AY, HR, AR, season
+
+Dtypes:
+Date        datetime64[us]
+HomeTeam               str
+AwayTeam               str
+FTHG                 int64
+FTAG                 int64
+FTR                    str
+HTHG                 int64
+HTAG                 int64
+HTR                    str
+Referee                str
+HS                   int64
+AS                   int64
+HST                  int64
+AST                  int64
+HF                   int64
+AF                   int64
+HC                   int64
+AC                   int64
+HY                   int64
+AY                   int64
+HR                   int64
+AR                   int64
+season               int64
+
+Missing values:
+Date        0
+HomeTeam    0
+AwayTeam    0
+FTHG        0
+FTAG        0
+FTR         0
+HTHG        0
+HTAG        0
+HTR         0
+Referee     0
+HS          0
+AS          0
+HST         0
+AST         0
+HF          0
+AF          0
+HC          0
+AC          0
+HY          0
+AY          0
+HR          0
+AR          0
+season      0
+
+Target distribution (FTR):
+FTR
+A    505
+D    345
+H    670
+
+
+[test]
+Shape: 1890 rows x 23 columns
+Date range: 2021-08-13 to 2026-05-19
+
+Columns:
+Date, HomeTeam, AwayTeam, FTHG, FTAG, FTR, HTHG, HTAG, HTR, Referee, HS, AS, HST, AST, HF, AF, HC, AC, HY, AY, HR, AR, season
+
+Dtypes:
+Date        datetime64[us]
+HomeTeam               str
+AwayTeam               str
+FTHG                 int64
+FTAG                 int64
+FTR                    str
+HTHG                 int64
+HTAG                 int64
+HTR                    str
+Referee                str
+HS                   int64
+AS                   int64
+HST                  int64
+AST                  int64
+HF                   int64
+AF                   int64
+HC                   int64
+AC                   int64
+HY                   int64
+AY                   int64
+HR                   int64
+AR                   int64
+season               int64
+
+Missing values:
+Date        0
+HomeTeam    0
+AwayTeam    0
+FTHG        0
+FTAG        0
+FTR         0
+HTHG        0
+HTAG        0
+HTR         0
+Referee     0
+HS          0
+AS          0
+HST         0
+AST         0
+HF          0
+AF          0
+HC          0
+AC          0
+HY          0
+AY          0
+HR          0
+AR          0
+season      0
+
+Target distribution (FTR):
+FTR
+A    604
+D    451
+H    835
+
+
+Chronological Split Check
+============================================
+Status: PASS
+Expected ordering: train max date < validation min date < validation max date < test min date
+
+Feature Groups Based On Training Columns
+============================================
+Numeric features (0):
+(none)
+
+Categorical features (0):
+(none)
+
+Leakage columns (18):
+AC, AF, AR, AS, AST, AY, FTAG, FTHG, FTR, HC, HF, HR, HS, HST, HTAG, HTHG, HTR, HY
+
+Identifier columns (5):
+AwayTeam, Date, HomeTeam, Referee, season
+
+Leakage Note
+============================================
+Leakage columns include current-match outcomes and in-match events. They must be excluded from pre-match models because they are only known after kickoff or after the match is finished.

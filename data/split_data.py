@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-INPUT_DIR = os.path.join("data", "raw", "premier-league")
+INPUT_DIR = os.path.join("data", "raw")
 OUTPUT_DIR = os.path.join("data", "raw", "splits")
 
 TRAIN_START = "0001"
