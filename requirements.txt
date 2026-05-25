@@ -10,3 +10,4 @@ lightgbm
 optuna
 tqdm
 pyyaml
+pytest

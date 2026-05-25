@@ -1,101 +1,87 @@
+from __future__ import annotations
+
+from pathlib import Path
+
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler
-import math
 
-class FootballDataPipeline:
-    def __init__(self, sequence_length=5):
-        self.seq_len = sequence_length
-        self.scaler = StandardScaler()
-        
-    def _clean_df(self, df):
-        df['Date'] = pd.to_datetime(df['Date'])
-        df = df.sort_values(by='Date').reset_index(drop=True)
-        return df
+from src.features.build_team_features import (
+    CURRENT_MATCH_COLUMNS,
+    LEAKAGE_COLUMNS_EXCLUDED,
+    PROCESSED_SPLIT_DIR,
+)
 
-    def _get_team_history(self, df, team_name_code, current_date, current_season):
-        past_matches = df[(df['Date'] < current_date) & 
-                          (df['season'] == current_season) & 
-                          ((df['HomeTeam'] == team_name_code) | (df['AwayTeam'] == team_name_code))]
-        return past_matches.tail(self.seq_len)
 
-    def _extract_exponential_form(self, history_df, team_name_code):
-        points = 0
-        gf, ga, sf, sa, stf, sta = 0, 0, 0, 0, 0, 0
-        
-        num_matches = len(history_df)
-        if num_matches == 0:
-            return [0] * 7
-            
-        weights = np.linspace(0.5, 1.5, num_matches)
-        weights /= weights.sum()
-        
-        for idx, (_, match) in enumerate(history_df.iterrows()):
-            w = weights[idx]
-            is_home = match['HomeTeam'] == team_name_code
-            
-            if is_home:
-                gf += match['FTHG'] * w
-                ga += match['FTAG'] * w
-                sf += match['HS'] * w
-                sa += match['AS'] * w
-                stf += match['HST'] * w
-                sta += match['AST'] * w
-                if match['FTR'] == 2: points += 3 * w
-                elif match['FTR'] == 1: points += 1 * w
-            else:
-                gf += match['FTAG'] * w
-                ga += match['FTHG'] * w
-                sf += match['AS'] * w
-                sa += match['HS'] * w
-                stf += match['AST'] * w
-                sta += match['HST'] * w
-                if match['FTR'] == 0: points += 3 * w
-                elif match['FTR'] == 1: points += 1 * w
-                
-        return [points, gf, ga, sf, sa, stf, sta]
+TARGET_COLUMN = "target"
+TARGET_NAMES = ["win", "draw", "loss"]
 
-    def process_file(self, filepath):
-        df = self._clean_df(pd.read_csv(filepath))
-        X_list, Y_list = [], []
-        
-        for index, match in df.iterrows():
-            home_team = match['HomeTeam']
-            away_team = match['AwayTeam']
-            match_date = match['Date']
-            current_season = match['season']
-            
-            h_hist = self._get_team_history(df, home_team, match_date, current_season)
-            a_hist = self._get_team_history(df, away_team, match_date, current_season)
-            
-            if len(h_hist) < self.seq_len or len(a_hist) < self.seq_len:
-                continue
-                
-            h = self._extract_exponential_form(h_hist, home_team)
-            a = self._extract_exponential_form(a_hist, away_team)
-            
-            # --- CYCLICAL TIME ENCODING ---
-            month = match['month']
-            month_sin = math.sin(2 * math.pi * month / 12)
-            month_cos = math.cos(2 * math.pi * month / 12)
-            
-            # --- UNIVERSAL FEATURE SET ---
-            # --- THE HYBRID FEATURE SET ---
-            features = (
-                # 1. The 14 Absolute Form Stats (This restores your 51.6% baseline baseline!)
-                h + a + 
-                # 2. The Direct Clashes & Context (To push it even higher)
-                [
-                    h[0] - a[0],        # Points Differential
-                    h[1] - a[2],        # Home Attack vs Away Defense
-                    a[1] - h[2],        # Away Attack vs Home Defense
-                    month_sin,          # Time of year (Sine)
-                    month_cos,          # Time of year (Cosine)
-                    match['is_weekend'] # Structural context flag
-                ]
+METADATA_COLUMNS = {
+    "match_id",
+    "Date",
+    "target",
+    "previous_matches",
+    "opponent_previous_matches",
+}
+KNOWN_CATEGORICAL_FEATURES = {"season", "team", "opponent"}
+FORBIDDEN_DIRECT_INPUTS = set(LEAKAGE_COLUMNS_EXCLUDED) | set(CURRENT_MATCH_COLUMNS)
+
+
+def load_processed_splits(
+    split_dir: Path = PROCESSED_SPLIT_DIR,
+) -> dict[str, pd.DataFrame]:
+    splits = {}
+    for split_name in ("train", "val", "test"):
+        path = split_dir / f"{split_name}.csv"
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Missing {path}. Run `python scripts/build_features.py` first."
             )
-            
-            X_list.append(features)
-            Y_list.append(int(match['FTR']))
+        splits[split_name] = pd.read_csv(path, parse_dates=["Date"])
+    return splits
 
-        return np.array(X_list), np.array(Y_list)
+
+def infer_feature_columns(df: pd.DataFrame) -> list[str]:
+    features = [col for col in df.columns if col not in METADATA_COLUMNS]
+    leakage = sorted(FORBIDDEN_DIRECT_INPUTS.intersection(features))
+    if leakage:
+        raise ValueError(
+            "Processed features contain direct current-match leakage columns: "
+            + ", ".join(leakage)
+        )
+    return features
+
+
+def split_feature_types(feature_columns: list[str]) -> tuple[list[str], list[str]]:
+    categorical = [col for col in feature_columns if col in KNOWN_CATEGORICAL_FEATURES]
+    numeric = [col for col in feature_columns if col not in categorical]
+    return numeric, categorical
+
+
+def validate_processed_splits(
+    splits: dict[str, pd.DataFrame],
+    feature_columns: list[str],
+) -> None:
+    required = set(feature_columns) | {TARGET_COLUMN, "Date"}
+    for split_name, df in splits.items():
+        missing = sorted(required.difference(df.columns))
+        if missing:
+            raise ValueError(f"{split_name} split is missing columns: {missing}")
+
+        leakage = sorted(FORBIDDEN_DIRECT_INPUTS.intersection(feature_columns))
+        if leakage:
+            raise ValueError(
+                f"{split_name} split uses leakage columns as features: {leakage}"
+            )
+
+        null_targets = int(df[TARGET_COLUMN].isna().sum())
+        if null_targets:
+            raise ValueError(f"{split_name} split has {null_targets} missing targets")
+
+
+def target_distribution(df: pd.DataFrame) -> str:
+    distribution = (
+        df[TARGET_COLUMN]
+        .value_counts()
+        .sort_index()
+        .rename(index={0: "0 win", 1: "1 draw", 2: "2 loss"})
+    )
+    return distribution.to_string()
