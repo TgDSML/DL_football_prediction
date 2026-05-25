@@ -1,5 +1,7 @@
 # Python
 __pycache__/
+.pytest_cache/
+pytest-cache-files-*/
 *.py[cod]
 *.pyo
 *.pyd
@@ -27,9 +29,13 @@ premvenv
 
 # Data and generated outputs
 data/raw/*
+data/processed/*.csv
+data/processed/splits/*.csv
+outputs/models/*
 outputs/plots/*
 outputs/results/*
 outputs/logs/*
+outputs/reports/*.csv
 
 # Keep directory placeholders
 !data/raw/.gitkeep

@@ -6,10 +6,11 @@ from pathlib import Path
 import pandas as pd
 
 
-RAW_DIR = Path("data/raw")
-PROCESSED_DATA_PATH = Path("data/processed/team_centric_features.csv")
-PROCESSED_SPLIT_DIR = Path("data/processed/splits")
-REPORT_PATH = Path("outputs/reports/preprocessing_report.txt")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+RAW_DIR = PROJECT_ROOT / "data/raw"
+PROCESSED_DATA_PATH = PROJECT_ROOT / "data/processed/team_centric_features.csv"
+PROCESSED_SPLIT_DIR = PROJECT_ROOT / "data/processed/splits"
+REPORT_PATH = PROJECT_ROOT / "outputs/reports/preprocessing_report.txt"
 
 RAW_COLUMNS = [
     "Date",
@@ -99,7 +100,14 @@ def load_raw_matches(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
         if "splits" not in path.parts
     )
     if not paths:
-        raise FileNotFoundError(f"No season CSV files found in {raw_dir}")
+        split_dir = raw_dir / "splits"
+        paths = [split_dir / name for name in ("train.csv", "val.csv", "test.csv")]
+        paths = [path for path in paths if path.exists()]
+    if not paths:
+        raise FileNotFoundError(
+            f"No season CSV files found in {raw_dir} and no split CSV files found "
+            f"in {raw_dir / 'splits'}"
+        )
 
     frames = []
     for path in paths:
@@ -108,7 +116,9 @@ def load_raw_matches(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
         df = df[available_columns].copy()
         if "Referee" not in df.columns:
             df["Referee"] = pd.NA
-        df["season"] = season_code_from_path(path)
+        if "season" not in df.columns:
+            df["season"] = season_code_from_path(path)
+        df["season"] = df["season"].astype(str).str.zfill(4)
         df["source_file"] = path.name
         frames.append(df)
 
@@ -357,7 +367,6 @@ def build_team_features() -> BuildResult:
         if any(col.endswith(f"_last_{window}") for window in WINDOWS)
     ]
     with_opponents = add_opponent_features(rolled, rolling_feature_columns)
-    with_opponents["opponent_rest_days"] = with_opponents["opponent_rest_days"]
     with_opponents["match_month"] = with_opponents["Date"].dt.month
 
     processed_full = with_opponents[

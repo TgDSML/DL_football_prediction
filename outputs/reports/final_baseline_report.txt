@@ -1,0 +1,258 @@
+Final Leakage-Free ML Baselines
+========================================
+Dataset: data\processed\splits
+Feature source: src/features/build_team_features.py
+Training split: train
+Model selection split: val
+Final evaluation split: test
+
+Leakage Policy
+========================================
+Current-match statistics are used only to build shifted historical rolling features.
+They are never direct inputs for the target match.
+
+Split Sizes
+========================================
+train: 12614 rows, 2000-09-16 to 2017-05-21
+val: 3020 rows, 2017-08-11 to 2021-05-23
+test: 3750 rows, 2021-08-14 to 2026-05-19
+
+Target Distribution
+========================================
+[train]
+target
+0 win     4700
+1 draw    3214
+2 loss    4700
+
+[val]
+target
+0 win     1168
+1 draw     684
+2 loss    1168
+
+[test]
+target
+0 win     1428
+1 draw     894
+2 loss    1428
+
+Feature Columns
+========================================
+Total: 103
+
+Numeric
+----------------------------------------
+is_home
+rest_days
+points_last_3
+points_last_5
+points_last_10
+wins_last_3
+wins_last_5
+wins_last_10
+draws_last_3
+draws_last_5
+draws_last_10
+losses_last_3
+losses_last_5
+losses_last_10
+goals_for_last_3
+goals_for_last_5
+goals_for_last_10
+goals_against_last_3
+goals_against_last_5
+goals_against_last_10
+goal_diff_last_3
+goal_diff_last_5
+goal_diff_last_10
+avg_goals_for_last_3
+avg_goals_for_last_5
+avg_goals_for_last_10
+avg_goals_against_last_3
+avg_goals_against_last_5
+avg_goals_against_last_10
+clean_sheets_last_3
+clean_sheets_last_5
+clean_sheets_last_10
+failed_to_score_last_3
+failed_to_score_last_5
+failed_to_score_last_10
+avg_shots_last_3
+avg_shots_last_5
+avg_shots_last_10
+avg_shots_on_target_last_3
+avg_shots_on_target_last_5
+avg_shots_on_target_last_10
+avg_corners_last_3
+avg_corners_last_5
+avg_corners_last_10
+avg_yellow_cards_last_3
+avg_yellow_cards_last_5
+avg_yellow_cards_last_10
+avg_red_cards_last_3
+avg_red_cards_last_5
+avg_red_cards_last_10
+opponent_rest_days
+opponent_points_last_3
+opponent_points_last_5
+opponent_points_last_10
+opponent_wins_last_3
+opponent_wins_last_5
+opponent_wins_last_10
+opponent_draws_last_3
+opponent_draws_last_5
+opponent_draws_last_10
+opponent_losses_last_3
+opponent_losses_last_5
+opponent_losses_last_10
+opponent_goals_for_last_3
+opponent_goals_for_last_5
+opponent_goals_for_last_10
+opponent_goals_against_last_3
+opponent_goals_against_last_5
+opponent_goals_against_last_10
+opponent_goal_diff_last_3
+opponent_goal_diff_last_5
+opponent_goal_diff_last_10
+opponent_avg_goals_for_last_3
+opponent_avg_goals_for_last_5
+opponent_avg_goals_for_last_10
+opponent_avg_goals_against_last_3
+opponent_avg_goals_against_last_5
+opponent_avg_goals_against_last_10
+opponent_clean_sheets_last_3
+opponent_clean_sheets_last_5
+opponent_clean_sheets_last_10
+opponent_failed_to_score_last_3
+opponent_failed_to_score_last_5
+opponent_failed_to_score_last_10
+opponent_avg_shots_last_3
+opponent_avg_shots_last_5
+opponent_avg_shots_last_10
+opponent_avg_shots_on_target_last_3
+opponent_avg_shots_on_target_last_5
+opponent_avg_shots_on_target_last_10
+opponent_avg_corners_last_3
+opponent_avg_corners_last_5
+opponent_avg_corners_last_10
+opponent_avg_yellow_cards_last_3
+opponent_avg_yellow_cards_last_5
+opponent_avg_yellow_cards_last_10
+opponent_avg_red_cards_last_3
+opponent_avg_red_cards_last_5
+opponent_avg_red_cards_last_10
+match_month
+
+Categorical
+----------------------------------------
+season
+team
+opponent
+
+Results On Test Split
+========================================
+[dummy_most_frequent]
+accuracy: 0.3808
+balanced_accuracy: 0.3333
+macro_f1: 0.1839
+log_loss: 22.3182
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[1428    0    0]
+ [ 894    0    0]
+ [1428    0    0]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.38      1.00      0.55      1428
+        draw       0.00      0.00      0.00       894
+        loss       0.00      0.00      0.00      1428
+
+    accuracy                           0.38      3750
+   macro avg       0.13      0.33      0.18      3750
+weighted avg       0.15      0.38      0.21      3750
+
+
+[logistic_regression]
+accuracy: 0.5056
+balanced_accuracy: 0.4571
+macro_f1: 0.4391
+log_loss: 1.0178
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[896 161 371]
+ [395 104 395]
+ [372 160 896]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.54      0.63      0.58      1428
+        draw       0.24      0.12      0.16       894
+        loss       0.54      0.63      0.58      1428
+
+    accuracy                           0.51      3750
+   macro avg       0.44      0.46      0.44      3750
+weighted avg       0.47      0.51      0.48      3750
+
+
+[random_forest]
+accuracy: 0.5107
+balanced_accuracy: 0.4511
+macro_f1: 0.4078
+log_loss: 1.0145
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[954  49 425]
+ [435  29 430]
+ [430  66 932]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.52      0.67      0.59      1428
+        draw       0.20      0.03      0.06       894
+        loss       0.52      0.65      0.58      1428
+
+    accuracy                           0.51      3750
+   macro avg       0.42      0.45      0.41      3750
+weighted avg       0.45      0.51      0.46      3750
+
+
+[gradient_boosting]
+accuracy: 0.5080
+balanced_accuracy: 0.4482
+macro_f1: 0.4015
+log_loss: 1.0116
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[939  25 464]
+ [439  25 430]
+ [451  36 941]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.51      0.66      0.58      1428
+        draw       0.29      0.03      0.05       894
+        loss       0.51      0.66      0.58      1428
+
+    accuracy                           0.51      3750
+   macro avg       0.44      0.45      0.40      3750
+weighted avg       0.46      0.51      0.45      3750
+
+
+[xgboost]
+accuracy: 0.5157
+balanced_accuracy: 0.4527
+macro_f1: 0.3977
+log_loss: 1.0091
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[958  20 450]
+ [436   9 449]
+ [443  18 967]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.52      0.67      0.59      1428
+        draw       0.19      0.01      0.02       894
+        loss       0.52      0.68      0.59      1428
+
+    accuracy                           0.52      3750
+   macro avg       0.41      0.45      0.40      3750
+weighted avg       0.44      0.52      0.45      3750
+
