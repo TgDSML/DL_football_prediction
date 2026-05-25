@@ -1,0 +1,157 @@
+Team-Centric Feature Engineering Report
+==============================================
+Total raw matches: 9870
+Total team-centric rows: 19740
+Rows after dropping insufficient history: 19384
+Date range: 2000-09-16 to 2026-05-19
+
+Split Sizes
+==============================================
+train: 12614
+val: 3020
+test: 3750
+
+Target Distribution Per Split
+==============================================
+[train]
+target
+0 win     4700
+1 draw    3214
+2 loss    4700
+
+[val]
+target
+0 win     1168
+1 draw     684
+2 loss    1168
+
+[test]
+target
+0 win     1428
+1 draw     894
+2 loss    1428
+
+Feature Columns
+==============================================
+season
+is_home
+rest_days
+points_last_3
+points_last_5
+points_last_10
+wins_last_3
+wins_last_5
+wins_last_10
+draws_last_3
+draws_last_5
+draws_last_10
+losses_last_3
+losses_last_5
+losses_last_10
+goals_for_last_3
+goals_for_last_5
+goals_for_last_10
+goals_against_last_3
+goals_against_last_5
+goals_against_last_10
+goal_diff_last_3
+goal_diff_last_5
+goal_diff_last_10
+avg_goals_for_last_3
+avg_goals_for_last_5
+avg_goals_for_last_10
+avg_goals_against_last_3
+avg_goals_against_last_5
+avg_goals_against_last_10
+clean_sheets_last_3
+clean_sheets_last_5
+clean_sheets_last_10
+failed_to_score_last_3
+failed_to_score_last_5
+failed_to_score_last_10
+avg_shots_last_3
+avg_shots_last_5
+avg_shots_last_10
+avg_shots_on_target_last_3
+avg_shots_on_target_last_5
+avg_shots_on_target_last_10
+avg_corners_last_3
+avg_corners_last_5
+avg_corners_last_10
+avg_yellow_cards_last_3
+avg_yellow_cards_last_5
+avg_yellow_cards_last_10
+avg_red_cards_last_3
+avg_red_cards_last_5
+avg_red_cards_last_10
+opponent_rest_days
+opponent_points_last_3
+opponent_points_last_5
+opponent_points_last_10
+opponent_wins_last_3
+opponent_wins_last_5
+opponent_wins_last_10
+opponent_draws_last_3
+opponent_draws_last_5
+opponent_draws_last_10
+opponent_losses_last_3
+opponent_losses_last_5
+opponent_losses_last_10
+opponent_goals_for_last_3
+opponent_goals_for_last_5
+opponent_goals_for_last_10
+opponent_goals_against_last_3
+opponent_goals_against_last_5
+opponent_goals_against_last_10
+opponent_goal_diff_last_3
+opponent_goal_diff_last_5
+opponent_goal_diff_last_10
+opponent_avg_goals_for_last_3
+opponent_avg_goals_for_last_5
+opponent_avg_goals_for_last_10
+opponent_avg_goals_against_last_3
+opponent_avg_goals_against_last_5
+opponent_avg_goals_against_last_10
+opponent_clean_sheets_last_3
+opponent_clean_sheets_last_5
+opponent_clean_sheets_last_10
+opponent_failed_to_score_last_3
+opponent_failed_to_score_last_5
+opponent_failed_to_score_last_10
+opponent_avg_shots_last_3
+opponent_avg_shots_last_5
+opponent_avg_shots_last_10
+opponent_avg_shots_on_target_last_3
+opponent_avg_shots_on_target_last_5
+opponent_avg_shots_on_target_last_10
+opponent_avg_corners_last_3
+opponent_avg_corners_last_5
+opponent_avg_corners_last_10
+opponent_avg_yellow_cards_last_3
+opponent_avg_yellow_cards_last_5
+opponent_avg_yellow_cards_last_10
+opponent_avg_red_cards_last_3
+opponent_avg_red_cards_last_5
+opponent_avg_red_cards_last_10
+match_month
+
+Leakage Columns Excluded
+==============================================
+FTHG
+FTAG
+FTR
+HTHG
+HTAG
+HTR
+HS
+AS
+HST
+AST
+HF
+AF
+HC
+AC
+HY
+AY
+HR
+AR

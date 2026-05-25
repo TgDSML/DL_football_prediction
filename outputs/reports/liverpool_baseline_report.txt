@@ -1,0 +1,178 @@
+Liverpool Starter ML Baselines
+====================================
+Dataset: data\processed\team_centric_features.csv
+Team: Liverpool
+Rows: train=781, test=195
+Train date range: 2000-09-17 to 2021-04-19
+Test date range: 2021-04-24 to 2026-05-15
+
+Feature Set
+====================================
+is_home
+rest_days
+match_month
+points_last_5
+wins_last_5
+draws_last_5
+losses_last_5
+goals_for_last_5
+goals_against_last_5
+goal_diff_last_5
+avg_goals_for_last_5
+avg_goals_against_last_5
+clean_sheets_last_5
+failed_to_score_last_5
+avg_shots_last_5
+avg_shots_on_target_last_5
+avg_corners_last_5
+avg_yellow_cards_last_5
+avg_red_cards_last_5
+opponent
+
+Target Encoding
+====================================
+0 = Liverpool win
+1 = draw
+2 = Liverpool loss
+
+Target Distribution
+====================================
+[train]
+target
+0 win     426
+1 draw    186
+2 loss    169
+
+[test]
+target
+0 win     118
+1 draw     46
+2 loss     31
+
+Results
+====================================
+[dummy_most_frequent]
+accuracy: 0.6051
+balanced_accuracy: 0.3333
+macro_f1: 0.2513
+log_loss: 14.2326
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[118   0   0]
+ [ 46   0   0]
+ [ 31   0   0]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.61      1.00      0.75       118
+        draw       0.00      0.00      0.00        46
+        loss       0.00      0.00      0.00        31
+
+    accuracy                           0.61       195
+   macro avg       0.20      0.33      0.25       195
+weighted avg       0.37      0.61      0.46       195
+
+
+[logistic_regression]
+accuracy: 0.5333
+balanced_accuracy: 0.4376
+macro_f1: 0.4283
+log_loss: 0.9654
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[81 16 21]
+ [23 11 12]
+ [15  4 12]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.68      0.69      0.68       118
+        draw       0.35      0.24      0.29        46
+        loss       0.27      0.39      0.32        31
+
+    accuracy                           0.53       195
+   macro avg       0.43      0.44      0.43       195
+weighted avg       0.54      0.53      0.53       195
+
+
+[random_forest]
+accuracy: 0.5641
+balanced_accuracy: 0.4438
+macro_f1: 0.4179
+log_loss: 0.9945
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[91  7 20]
+ [31  5 10]
+ [15  2 14]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.66      0.77      0.71       118
+        draw       0.36      0.11      0.17        46
+        loss       0.32      0.45      0.37        31
+
+    accuracy                           0.56       195
+   macro avg       0.45      0.44      0.42       195
+weighted avg       0.54      0.56      0.53       195
+
+
+[gradient_boosting]
+accuracy: 0.5949
+balanced_accuracy: 0.4274
+macro_f1: 0.4309
+log_loss: 0.9492
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[99  4 15]
+ [27 10  9]
+ [22  2  7]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.67      0.84      0.74       118
+        draw       0.62      0.22      0.32        46
+        loss       0.23      0.23      0.23        31
+
+    accuracy                           0.59       195
+   macro avg       0.51      0.43      0.43       195
+weighted avg       0.59      0.59      0.56       195
+
+
+[svm_rbf]
+accuracy: 0.4462
+balanced_accuracy: 0.3940
+macro_f1: 0.3785
+log_loss: 0.9193
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[63 26 29]
+ [22 12 12]
+ [ 9 10 12]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.67      0.53      0.59       118
+        draw       0.25      0.26      0.26        46
+        loss       0.23      0.39      0.29        31
+
+    accuracy                           0.45       195
+   macro avg       0.38      0.39      0.38       195
+weighted avg       0.50      0.45      0.47       195
+
+
+[xgboost]
+accuracy: 0.5897
+balanced_accuracy: 0.4034
+macro_f1: 0.3980
+log_loss: 0.9649
+confusion_matrix rows=true cols=pred labels=[win, draw, loss]
+[[102   7   9]
+ [ 32   7   7]
+ [ 23   2   6]]
+classification_report:
+              precision    recall  f1-score   support
+
+         win       0.65      0.86      0.74       118
+        draw       0.44      0.15      0.23        46
+        loss       0.27      0.19      0.23        31
+
+    accuracy                           0.59       195
+   macro avg       0.45      0.40      0.40       195
+weighted avg       0.54      0.59      0.54       195
+
