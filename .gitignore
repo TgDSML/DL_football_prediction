@@ -51,3 +51,5 @@ splits
 premier-league
 *csv
 *.joblib
+*pkl
+*configs.json

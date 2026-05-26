@@ -1,0 +1,181 @@
+ML RUN REPORT
+================================================================================
+
+MODEL: logistic_regression_weighted
+--------------------------------------------------------------------------------
+Validation accuracy: 0.5197
+Test accuracy:       0.4950
+Validation macro F1: 0.4833
+Test macro F1:       0.4641
+
+Validation classification report:
+              precision    recall  f1-score   support
+
+           0     0.5809    0.5957    0.5882      1175
+           1     0.2878    0.2623    0.2745       690
+           2     0.5796    0.5949    0.5871      1175
+
+    accuracy                         0.5197      3040
+   macro avg     0.4828    0.4843    0.4833      3040
+weighted avg     0.5139    0.5197    0.5166      3040
+
+
+Validation confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     700     223     252
+true_1     254     181     255
+true_2     251     225     699
+
+Test classification report:
+              precision    recall  f1-score   support
+
+           0     0.5688    0.5719    0.5703      1439
+           1     0.2545    0.2494    0.2520       902
+           2     0.5680    0.5719    0.5699      1439
+
+    accuracy                         0.4950      3780
+   macro avg     0.4638    0.4644    0.4641      3780
+weighted avg     0.4935    0.4950    0.4942      3780
+
+
+Test confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     823     329     287
+true_1     338     225     339
+true_2     286     330     823
+
+
+
+MODEL: svm_rbf_weighted
+--------------------------------------------------------------------------------
+Validation accuracy: 0.4954
+Test accuracy:       0.4696
+Validation macro F1: 0.4781
+Test macro F1:       0.4507
+
+Validation classification report:
+              precision    recall  f1-score   support
+
+           0     0.5831    0.5345    0.5577      1175
+           1     0.2817    0.3667    0.3186       690
+           2     0.5869    0.5319    0.5580      1175
+
+    accuracy                         0.4954      3040
+   macro avg     0.4839    0.4777    0.4781      3040
+weighted avg     0.5162    0.4954    0.5036      3040
+
+
+Validation confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     628     323     224
+true_1     221     253     216
+true_2     228     322     625
+
+Test classification report:
+              precision    recall  f1-score   support
+
+           0     0.5599    0.5261    0.5425      1439
+           1     0.2461    0.2982    0.2697       902
+           2     0.5610    0.5205    0.5400      1439
+
+    accuracy                         0.4696      3780
+   macro avg     0.4557    0.4483    0.4507      3780
+weighted avg     0.4855    0.4696    0.4764      3780
+
+
+Test confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     757     411     271
+true_1     318     269     315
+true_2     277     413     749
+
+
+
+MODEL: xgboost_weighted
+--------------------------------------------------------------------------------
+Validation accuracy: 0.5312
+Test accuracy:       0.4929
+Validation macro F1: 0.4952
+Test macro F1:       0.4567
+
+Validation classification report:
+              precision    recall  f1-score   support
+
+           0     0.5877    0.6043    0.5959      1175
+           1     0.3126    0.2768    0.2936       690
+           2     0.5848    0.6077    0.5960      1175
+
+    accuracy                         0.5312      3040
+   macro avg     0.4950    0.4962    0.4952      3040
+weighted avg     0.5241    0.5312    0.5273      3040
+
+
+Validation confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     710     210     255
+true_1     247     191     252
+true_2     251     210     714
+
+Test classification report:
+              precision    recall  f1-score   support
+
+           0     0.5683    0.5837    0.5759      1439
+           1     0.2341    0.2162    0.2248       902
+           2     0.5636    0.5754    0.5695      1439
+
+    accuracy                         0.4929      3780
+   macro avg     0.4554    0.4584    0.4567      3780
+weighted avg     0.4868    0.4929    0.4897      3780
+
+
+Test confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     840     313     286
+true_1     352     195     355
+true_2     286     325     828
+
+
+
+MODEL: ensemble_avg_proba
+--------------------------------------------------------------------------------
+Validation accuracy: 0.5352
+Test accuracy:       0.5151
+Validation macro F1: 0.4641
+Test macro F1:       0.4387
+
+Validation classification report:
+              precision    recall  f1-score   support
+
+           0     0.5534    0.6528    0.5990      1175
+           1     0.3432    0.1348    0.1935       690
+           2     0.5546    0.6528    0.5997      1175
+
+    accuracy                         0.5352      3040
+   macro avg     0.4837    0.4801    0.4641      3040
+weighted avg     0.5061    0.5352    0.5072      3040
+
+
+Validation confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     767      90     318
+true_1     299      93     298
+true_2     320      88     767
+
+Test classification report:
+              precision    recall  f1-score   support
+
+           0     0.5441    0.6470    0.5911      1439
+           1     0.2346    0.0931    0.1333       902
+           2     0.5447    0.6477    0.5917      1439
+
+    accuracy                         0.5151      3780
+   macro avg     0.4412    0.4626    0.4387      3780
+weighted avg     0.4705    0.5151    0.4821      3780
+
+
+Test confusion matrix:
+        pred_0  pred_1  pred_2
+true_0     931     138     370
+true_1     409      84     409
+true_2     371     136     932
+
