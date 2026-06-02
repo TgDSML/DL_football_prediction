@@ -1,0 +1,30 @@
+STRATIFIED NAIVE BASELINE - TEST SET
+============================================================
+Samples: 1890
+Accuracy: 0.3413
+Macro F1: 0.3191
+Weighted F1: 0.3404
+
+Train class probabilities:
+{'0': 0.27941176470588236, '1': 0.25572755417956655, '2': 0.4648606811145511}
+
+Interpretation:
+This model does not use match features.
+It guesses outcomes randomly according to the class distribution in the training set.
+Its accuracy estimates how often a naive probability-based guess would be correct.
+
+Confusion Matrix (rows=true, cols=pred):
+[[161 158 285]
+ [124 111 216]
+ [233 229 373]]
+
+Classification Report:
+              precision    recall  f1-score   support
+
+    Away win       0.31      0.27      0.29       604
+        Draw       0.22      0.25      0.23       451
+    Home win       0.43      0.45      0.44       835
+
+    accuracy                           0.34      1890
+   macro avg       0.32      0.32      0.32      1890
+weighted avg       0.34      0.34      0.34      1890
