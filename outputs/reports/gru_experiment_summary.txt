@@ -1,0 +1,76 @@
+Scratch GRU Experiment Summary
+==============================
+
+All GRU experiments use manually implemented recurrent computation. The code
+does not use torch.nn.GRU, torch.nn.GRUCell, torch.nn.RNN, or torch.nn.LSTM.
+
+Best vanilla RNN accuracy reference:
+
+- home_away_seq10
+- Test accuracy: 0.5204
+
+Best vanilla RNN macro F1 reference:
+
+- home_away_seq10_weighted
+- Test macro F1: 0.4452
+
+| Experiment | Seq | Hidden | Dropout | Weighting | Test Accuracy | Accuracy Diff vs Best RNN | Test Macro F1 | Macro F1 Diff vs Best RNN |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |
+| gru_seq10_h64_none | 10 | 64 | 0.0 | none | 0.4565 | -0.0639 | 0.4151 | -0.0301 |
+| gru_seq10_h64_weighted | 10 | 64 | 0.0 | balanced | 0.4661 | -0.0543 | 0.4367 | -0.0085 |
+| gru_seq10_h128_none | 10 | 128 | 0.0 | none | 0.4677 | -0.0527 | 0.3953 | -0.0499 |
+| gru_seq10_h128_weighted | 10 | 128 | 0.0 | balanced | 0.4796 | -0.0408 | 0.4411 | -0.0041 |
+
+Best GRU Models
+===============
+
+Best GRU accuracy:
+
+- gru_seq10_h128_weighted
+- Test accuracy: 0.4796
+- Test macro F1: 0.4411
+
+Best GRU macro F1:
+
+- gru_seq10_h128_weighted
+- Test accuracy: 0.4796
+- Test macro F1: 0.4411
+
+Answers
+=======
+
+1. Did GRU outperform vanilla RNN?
+
+No. The best GRU accuracy, 0.4796, is below the best vanilla RNN accuracy,
+0.5204. The best GRU macro F1, 0.4411, is also below the best vanilla RNN macro
+F1, 0.4452.
+
+2. Did GRU improve draw prediction?
+
+The weighted GRU variants predicted draws more often than the unweighted h128
+run and improved draw recall. The best weighted GRU reached draw recall 0.22,
+but it did not clearly surpass the weighted vanilla RNN draw behavior.
+
+3. Did GRU improve macro F1?
+
+No. The best GRU macro F1 was 0.4411, which is close to but still below the
+best vanilla RNN macro F1 of 0.4452.
+
+4. Did GRU improve accuracy?
+
+No. GRU accuracy was substantially below the best vanilla RNN accuracy in this
+initial controlled grid.
+
+5. Is the added complexity justified?
+
+Not by these results. The GRU cell is more expressive and trainable, but this
+controlled comparison did not produce better accuracy or macro F1. It may still
+be useful for additional tuning, but the current evidence does not justify
+replacing the best vanilla scratch RNN baseline.
+
+Training Stability
+==================
+
+No runtime errors, NaN losses, or exploding-gradient failures were observed.
+Weighted GRU variants improved macro F1 relative to unweighted variants, but
+the accuracy tradeoff remained visible.

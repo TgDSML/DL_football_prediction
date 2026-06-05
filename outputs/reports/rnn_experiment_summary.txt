@@ -1,0 +1,54 @@
+RNN Experiment Summary
+======================
+
+All recurrent models in this table use manual from-scratch recurrent computation.
+No experiment in this summary uses torch.nn.RNN, torch.nn.LSTM, or torch.nn.GRU.
+
+| Experiment name | Sequence length | Input type | Model type | Class weighting | Test accuracy | Test macro F1 | Main observation |
+| --- | ---: | --- | --- | --- | ---: | ---: | --- |
+| home_only_seq5 | 5 | home history | single scratch RNN | none | 0.4788 | 0.3778 | Weakest context; useful baseline but misses away-team signal. |
+| home_away_seq5 | 5 | concatenated home + away history | single scratch RNN | none | 0.5163 | 0.3984 | Adding away history gives a clear accuracy gain over home-only. |
+| home_away_seq10 | 10 | concatenated home + away history | single scratch RNN | none | 0.5204 | 0.3938 | Best RNN accuracy so far; longer history helps accuracy but not macro F1. |
+| home_away_seq10_weighted | 10 | concatenated home + away history | single scratch RNN | balanced | 0.5022 | 0.4452 | Best RNN macro F1 so far; balanced weighting improves minority-class behavior. |
+| home_away_seq10_weighted_draw125 | 10 | concatenated home + away history | single scratch RNN | balanced, draw x1.25 | 0.4538 | 0.4422 | More draw recall, but too much accuracy loss versus balanced-only. |
+| home_away_seq10_weighted_draw150 | 10 | concatenated home + away history | single scratch RNN | balanced, draw x1.50 | 0.4290 | 0.4267 | Draw pressure is too strong; overall performance drops. |
+| dual_seq5_h64_none | 5 | split home + away histories | dual scratch RNN encoders | none | 0.4779 | 0.3952 | Separate encoders do not improve seq5 accuracy. |
+| dual_seq10_h64_none | 10 | split home + away histories | dual scratch RNN encoders | none | 0.4909 | 0.4071 | Better macro F1 than unweighted single seq10, but worse accuracy. |
+| dual_seq10_h64_weighted | 10 | split home + away histories | dual scratch RNN encoders | balanced | 0.4602 | 0.4247 | Weighting improves dual macro F1 but costs accuracy. |
+| dual_seq10_h64_weighted_draw125 | 10 | split home + away histories | dual scratch RNN encoders | balanced, draw x1.25 | 0.4522 | 0.4350 | Best dual macro F1; still below single-stream balanced macro F1. |
+
+Best RNN By Accuracy
+====================
+
+home_away_seq10 remains the best RNN by accuracy:
+
+- Test accuracy: 0.5204
+- Test macro F1: 0.3938
+
+Best RNN By Macro F1
+====================
+
+home_away_seq10_weighted is now the best RNN by macro F1:
+
+- Test accuracy: 0.5022
+- Test macro F1: 0.4452
+
+Comparison Against Classical Fixture-Level Baseline
+===================================================
+
+The best fixture-level classical ML accuracy is random_forest at 0.5211, which is
+slightly above the best RNN accuracy of 0.5204.
+
+The best fixture-level classical ML macro F1 is logistic_regression at 0.4237.
+The weighted single-stream scratch RNN improves on that macro F1 with 0.4452.
+
+Architecture Observation
+========================
+
+Class weighting improved macro F1, especially for draws, but reduced accuracy.
+Increasing the draw-specific multiplier beyond balanced weighting made the model
+predict more draws and reduced overall accuracy.
+
+The dual-encoder architecture did not improve accuracy over the single-stream
+home-away seq10 model. Its best macro F1, 0.4350, is useful but still below the
+single-stream balanced seq10 model at 0.4452.

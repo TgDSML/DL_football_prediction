@@ -151,6 +151,23 @@ def parse_match_dates(dates: pd.Series) -> pd.Series:
     return parsed
 
 
+def require_raw_split_files(raw_dir: Path = RAW_DIR) -> dict[str, Path]:
+    split_dir = raw_dir / "splits"
+    paths = {
+        split_name: split_dir / f"{split_name}.csv"
+        for split_name in ("train", "val", "test")
+    }
+    missing = [path for path in paths.values() if not path.exists()]
+    if missing:
+        missing_list = ", ".join(str(path) for path in missing)
+        raise FileNotFoundError(
+            "Missing raw split CSV file(s): "
+            f"{missing_list}. Run `python data/split_data.py` after placing "
+            "`season-*.csv` files in `data/raw/`, then rerun this command."
+        )
+    return paths
+
+
 def team_result(goals_for: int, goals_against: int) -> str:
     if goals_for > goals_against:
         return "win"
@@ -284,9 +301,9 @@ def add_opponent_features(df: pd.DataFrame, feature_columns: list[str]) -> pd.Da
 
 
 def split_processed(processed: pd.DataFrame) -> dict[str, pd.DataFrame]:
-    raw_split_dir = RAW_DIR / "splits"
-    raw_train = pd.read_csv(raw_split_dir / "train.csv")
-    raw_val = pd.read_csv(raw_split_dir / "val.csv")
+    raw_split_paths = require_raw_split_files()
+    raw_train = pd.read_csv(raw_split_paths["train"])
+    raw_val = pd.read_csv(raw_split_paths["val"])
     raw_train["Date"] = parse_match_dates(raw_train["Date"])
     raw_val["Date"] = parse_match_dates(raw_val["Date"])
 
