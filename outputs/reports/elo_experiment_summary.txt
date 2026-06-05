@@ -1,0 +1,112 @@
+Elo Experiment Summary
+======================
+
+Implementation
+==============
+
+Elo ratings are computed in src/features/elo.py with:
+
+- initial rating: 1500
+- K factor: 20
+- home win actual score: 1.0
+- draw actual score: 0.5
+- away win actual score: 0.0
+
+For each fixture, the feature value is recorded before the match update. Post-match
+ratings are used only for validation reporting and to carry ratings forward.
+
+Feature Counts
+==============
+
+| Dataset | Before Elo | After Elo | Added features |
+| --- | ---: | ---: | --- |
+| Fixture-level tabular | 151 | 154 | home_elo, away_elo, elo_diff |
+| Team-perspective tabular | 103 | 106 | team_elo, opponent_elo, elo_diff |
+| Raw sequence per team timestep | 16 | 17 | team_elo |
+| Raw home_away sequence timestep | 32 | 34 | home_team_elo, away_team_elo |
+
+Sample Elo Values
+=================
+
+| Date | Home | Away | FTR | Home pre | Home post | Away pre | Away post |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: |
+| 2002-04-21 | Arsenal | Ipswich | H | 1666.33 | 1671.17 | 1467.80 | 1462.96 |
+| 2011-10-29 | Chelsea | Arsenal | A | 1708.63 | 1696.67 | 1639.44 | 1651.40 |
+| 2024-10-26 | Brighton | Wolves | D | 1602.90 | 1599.64 | 1485.35 | 1488.61 |
+
+Leakage validation report: outputs/reports/elo_validation_report.txt
+
+Classical ML Comparison
+=======================
+
+Dataset: fixture-level tabular features.
+
+| Model | Acc no Elo | Acc Elo | Acc diff | Bal Acc no Elo | Bal Acc Elo | Macro F1 no Elo | Macro F1 Elo | Log loss no Elo | Log loss Elo |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| logistic_regression | 0.4731 | 0.4773 | +0.0043 | 0.4362 | 0.4366 | 0.4237 | 0.4204 | 1.0456 | 1.0290 |
+| random_forest | 0.5211 | 0.5216 | +0.0005 | 0.4525 | 0.4565 | 0.4169 | 0.4232 | 1.0115 | 1.0016 |
+| xgboost | 0.5152 | 0.5243 | +0.0091 | 0.4370 | 0.4486 | 0.3908 | 0.4041 | 1.0202 | 1.0070 |
+
+RNN Comparison
+==============
+
+| Experiment | Input | Previous reference | Elo result | Difference |
+| --- | --- | ---: | ---: | ---: |
+| Scratch RNN home_away_seq10 accuracy | raw home+away seq10 | 0.5204 | 0.5215 | +0.0011 |
+| Scratch RNN home_away_seq10 macro F1 | raw home+away seq10 | 0.3938 | 0.4231 | +0.0293 |
+| Weighted Scratch RNN seq10 accuracy | raw home+away seq10, balanced | 0.5022 | 0.4952 | -0.0070 |
+| Weighted Scratch RNN seq10 macro F1 | raw home+away seq10, balanced | 0.4452 | 0.4586 | +0.0134 |
+
+GRU Comparison
+==============
+
+| Experiment | Input | Previous reference | Elo result | Difference |
+| --- | --- | ---: | ---: | ---: |
+| GRU seq50 h128 weighted accuracy | raw home+away seq50, balanced | 0.4940 | 0.4912 | -0.0028 |
+| GRU seq50 h128 weighted macro F1 | raw home+away seq50, balanced | 0.4549 | 0.4457 | -0.0092 |
+
+Answers
+=======
+
+1. Does Elo improve classical ML?
+
+Yes for accuracy and log loss in the fixture-level comparison. XGBoost benefits
+most by accuracy, improving from 0.5152 to 0.5243. Random Forest gains only
+slightly in accuracy, but improves macro F1 from 0.4169 to 0.4232.
+
+2. Does Elo improve RNN accuracy?
+
+Slightly. The unweighted scratch RNN seq10 improves from 0.5204 to 0.5215.
+The gain is small, but it sets a new recurrent accuracy result in this run.
+
+3. Does Elo improve GRU macro F1?
+
+No. The GRU seq50 h128 weighted macro F1 drops from 0.4549 to 0.4457.
+
+4. Which model benefits most from Elo?
+
+XGBoost benefits most among classical models by accuracy, with +0.0091. The
+weighted scratch RNN benefits most by macro F1, with +0.0134 over its prior
+weighted reference.
+
+5. Is Elo more valuable than adding rolling sequence features?
+
+For accuracy, Elo is more useful than the raw_plus_rolling sequence extension in
+these runs. Raw_plus_rolling did not approach the best raw RNN accuracy, while
+Elo slightly improved the raw seq10 RNN accuracy and improved fixture-level
+XGBoost accuracy. For macro F1, raw_plus_rolling regularized GRU reached 0.4519,
+while Elo weighted RNN reached 0.4586, so Elo also has the stronger current
+macro-F1 result among these controlled additions.
+
+6. Should Elo become a permanent feature?
+
+Yes. Elo is leakage-free, cheap to compute, interpretable, and improves the
+best fixture-level ML accuracy plus the weighted RNN macro F1. It should remain
+as a permanent feature, while GRU-specific benefit should be revisited with
+additional tuning.
+
+Recommendation
+==============
+
+Keep Elo in the tabular and raw sequence feature builders. Treat it as a stable
+long-term team-strength signal that complements short-term rolling form.

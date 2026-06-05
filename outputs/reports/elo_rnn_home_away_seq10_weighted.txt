@@ -1,0 +1,78 @@
+From-Scratch Vanilla RNN Report
+================================
+Experiment name: elo_home_away_seq10_weighted
+Class weighting: balanced
+Draw weight multiplier: none
+Class counts [HomeWin, Draw, AwayWin]: [2861, 1567, 1726]
+Class weights [HomeWin, Draw, AwayWin]: [0.716999 1.309083 1.18849 ]
+Sequence feature names: home_was_home, home_points, home_goals_for, home_goals_against, home_goal_diff, home_shots_for, home_shots_against, home_shots_on_target_for, home_shots_on_target_against, home_corners_for, home_corners_against, home_yellow_cards_for, home_yellow_cards_against, home_red_cards_for, home_red_cards_against, home_rest_days, home_team_elo, away_was_home, away_points, away_goals_for, away_goals_against, away_goal_diff, away_shots_for, away_shots_against, away_shots_on_target_for, away_shots_on_target_against, away_corners_for, away_corners_against, away_yellow_cards_for, away_yellow_cards_against, away_red_cards_for, away_red_cards_against, away_rest_days, away_team_elo
+Train X shape: (6154, 10, 34)
+Val X shape: (1500, 10, 34)
+Test X shape: (1860, 10, 34)
+
+Date Ranges
+================================
+Train: 2000-10-28 to 2017-05-21
+Val: 2017-08-11 to 2021-05-23
+Test: 2021-08-14 to 2026-05-19
+
+Training History
+================================
+Epoch 01: train_loss=1.0497 val_loss=1.0038 val_acc=0.5220 val_macro_f1=0.4510
+Epoch 02: train_loss=1.0206 val_loss=1.0003 val_acc=0.5260 val_macro_f1=0.4705
+Epoch 03: train_loss=1.0130 val_loss=1.0050 val_acc=0.5267 val_macro_f1=0.4744
+Epoch 04: train_loss=1.0097 val_loss=1.0055 val_acc=0.5347 val_macro_f1=0.4843
+Epoch 05: train_loss=1.0089 val_loss=1.0035 val_acc=0.5180 val_macro_f1=0.4661
+Epoch 06: train_loss=1.0029 val_loss=1.0084 val_acc=0.5280 val_macro_f1=0.4602
+Epoch 07: train_loss=1.0034 val_loss=1.0064 val_acc=0.5280 val_macro_f1=0.4790
+Epoch 08: train_loss=0.9994 val_loss=1.0051 val_acc=0.5207 val_macro_f1=0.4678
+Epoch 09: train_loss=0.9960 val_loss=1.0136 val_acc=0.5300 val_macro_f1=0.4725
+Epoch 10: train_loss=0.9951 val_loss=1.0102 val_acc=0.5240 val_macro_f1=0.4661
+Epoch 11: train_loss=0.9915 val_loss=1.0143 val_acc=0.5207 val_macro_f1=0.4770
+Epoch 12: train_loss=0.9860 val_loss=1.0148 val_acc=0.5213 val_macro_f1=0.4694
+Epoch 13: train_loss=0.9799 val_loss=1.0202 val_acc=0.5247 val_macro_f1=0.4761
+Epoch 14: train_loss=0.9795 val_loss=1.0212 val_acc=0.5227 val_macro_f1=0.4757
+Epoch 15: train_loss=0.9727 val_loss=1.0204 val_acc=0.5127 val_macro_f1=0.4703
+Epoch 16: train_loss=0.9706 val_loss=1.0244 val_acc=0.5087 val_macro_f1=0.4817
+Epoch 17: train_loss=0.9618 val_loss=1.0268 val_acc=0.5173 val_macro_f1=0.4845
+Epoch 18: train_loss=0.9569 val_loss=1.0326 val_acc=0.5040 val_macro_f1=0.4721
+Epoch 19: train_loss=0.9511 val_loss=1.0329 val_acc=0.5047 val_macro_f1=0.4681
+Epoch 20: train_loss=0.9459 val_loss=1.0389 val_acc=0.5060 val_macro_f1=0.4694
+
+Validation Metrics
+================================
+Accuracy: 0.5173
+Macro F1: 0.4845
+Confusion Matrix:
+[[372 141 147]
+ [120  97 122]
+ [101  93 307]]
+Classification Report:
+              precision    recall  f1-score   support
+
+     HomeWin       0.63      0.56      0.59       660
+        Draw       0.29      0.29      0.29       339
+     AwayWin       0.53      0.61      0.57       501
+
+    accuracy                           0.52      1500
+   macro avg       0.48      0.49      0.48      1500
+weighted avg       0.52      0.52      0.52      1500
+
+Test Metrics
+================================
+Accuracy: 0.4952
+Macro F1: 0.4586
+Confusion Matrix:
+[[449 165 210]
+ [151 102 191]
+ [117 105 370]]
+Classification Report:
+              precision    recall  f1-score   support
+
+     HomeWin       0.63      0.54      0.58       824
+        Draw       0.27      0.23      0.25       444
+     AwayWin       0.48      0.62      0.54       592
+
+    accuracy                           0.50      1860
+   macro avg       0.46      0.47      0.46      1860
+weighted avg       0.50      0.50      0.49      1860

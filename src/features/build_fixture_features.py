@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.features.elo import compute_elo_ratings, fixture_elo_features
+
 from src.features.build_team_features import (
     LEAKAGE_COLUMNS_EXCLUDED,
     MIN_PREVIOUS_MATCHES,
@@ -106,6 +108,7 @@ def fixture_feature_columns(processed: pd.DataFrame) -> list[str]:
 
 def build_fixture_features() -> FixtureBuildResult:
     raw_matches = load_raw_matches()
+    elo_features = fixture_elo_features(compute_elo_ratings(raw_matches))
     team_rows = to_team_centric(raw_matches)
     rolled = add_rolling_features(team_rows)
     rolling_columns = rolling_feature_columns(rolled)
@@ -122,6 +125,7 @@ def build_fixture_features() -> FixtureBuildResult:
     fixtures["target"] = fixtures["FTR"].map(TARGET_MAP)
     fixtures["target_label"] = fixtures["target"].map(dict(enumerate(TARGET_NAMES)))
     fixtures["month"] = fixtures["Date"].dt.month
+    fixtures = fixtures.merge(elo_features, on="match_id", how="left")
 
     fixtures = fixtures.merge(
         home_history,

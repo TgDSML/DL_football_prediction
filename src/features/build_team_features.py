@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.features.elo import compute_elo_ratings, team_elo_features
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data/raw"
@@ -376,6 +378,12 @@ def build_report(result: BuildResult) -> str:
 def build_team_features() -> BuildResult:
     raw_matches = load_raw_matches()
     team_rows = to_team_centric(raw_matches)
+    elo_features = team_elo_features(compute_elo_ratings(raw_matches))
+    team_rows = team_rows.merge(
+        elo_features,
+        on=["match_id", "team", "opponent"],
+        how="left",
+    )
     rolled = add_rolling_features(team_rows)
 
     rolling_feature_columns = [

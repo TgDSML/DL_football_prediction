@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.features.elo import compute_elo_ratings, team_elo_features
 from src.features.build_team_features import (
     RAW_DIR,
     load_raw_matches,
@@ -41,6 +42,7 @@ SEQUENCE_FEATURES = [
     "red_cards_for",
     "red_cards_against",
     "rest_days",
+    "team_elo",
 ]
 ROLLING_WINDOWS = (3, 5, 10)
 ROLLING_BASE_FEATURES = [
@@ -306,6 +308,12 @@ def prepare_team_rows_for_feature_mode(
     feature_mode: str,
 ) -> pd.DataFrame:
     team_rows = build_sequence_team_rows(matches)
+    elo_features = team_elo_features(compute_elo_ratings(matches))
+    team_rows = team_rows.merge(
+        elo_features[["match_id", "team", "opponent", "team_elo"]],
+        on=["match_id", "team", "opponent"],
+        how="left",
+    )
     if feature_mode == RAW_FEATURE_MODE:
         return team_rows
     if feature_mode == RAW_PLUS_ROLLING_FEATURE_MODE:

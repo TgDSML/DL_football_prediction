@@ -1,0 +1,12 @@
+Elo Classical ML Comparison
+========================================
+Dataset: data/processed/fixture_level
+Feature count without Elo: 151
+Feature count with Elo: 154
+Elo columns: home_elo, away_elo, elo_diff
+
+| Model | Acc no Elo | Acc Elo | Acc diff | Bal Acc no Elo | Bal Acc Elo | Macro F1 no Elo | Macro F1 Elo | Log loss no Elo | Log loss Elo |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| logistic_regression | 0.4731 | 0.4773 | +0.0043 | 0.4362 | 0.4366 | 0.4237 | 0.4204 | 1.0456 | 1.0290 |
+| random_forest | 0.5211 | 0.5216 | +0.0005 | 0.4525 | 0.4565 | 0.4169 | 0.4232 | 1.0115 | 1.0016 |
+| xgboost | 0.5152 | 0.5243 | +0.0091 | 0.4370 | 0.4486 | 0.3908 | 0.4041 | 1.0202 | 1.0070 |
