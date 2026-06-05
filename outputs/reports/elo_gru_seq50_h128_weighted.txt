@@ -1,0 +1,109 @@
+Dual From-Scratch GRU Report
+================================
+Experiment name: elo_gru_seq50_h128_weighted
+Sequence prefix: home_away_seq50
+Sequence length: 50
+Hidden dim: 128
+Dropout: 0.0
+Weight decay: 0.0
+Early stopping: False
+Patience: 3
+Best validation macro F1 epoch: 1
+Early stopping epoch: 20
+Shared encoder: False
+Class weighting: balanced
+Draw weight multiplier: none
+Class counts [HomeWin, Draw, AwayWin]: [2321, 1278, 1415]
+Class weights [HomeWin, Draw, AwayWin]: [0.720092 1.307773 1.181154]
+Home feature names: home_was_home, home_points, home_goals_for, home_goals_against, home_goal_diff, home_shots_for, home_shots_against, home_shots_on_target_for, home_shots_on_target_against, home_corners_for, home_corners_against, home_yellow_cards_for, home_yellow_cards_against, home_red_cards_for, home_red_cards_against, home_rest_days, home_team_elo
+Away feature names: away_was_home, away_points, away_goals_for, away_goals_against, away_goal_diff, away_shots_for, away_shots_against, away_shots_on_target_for, away_shots_on_target_against, away_corners_for, away_corners_against, away_yellow_cards_for, away_yellow_cards_against, away_red_cards_for, away_red_cards_against, away_rest_days, away_team_elo
+Train home X shape: (5014, 50, 17)
+Train away X shape: (5014, 50, 17)
+
+Date Ranges
+================================
+Train: 2001-11-24 to 2017-05-21
+Val: 2017-08-11 to 2021-05-23
+Test: 2021-08-14 to 2026-05-19
+
+Training History
+================================
+Epoch 01: train_loss=1.0237 train_acc=0.5044 train_macro_f1=0.4847 val_loss=1.0157 val_acc=0.5057 val_macro_f1=0.4690
+Epoch 02: train_loss=1.0024 train_acc=0.5403 train_macro_f1=0.4903 val_loss=1.0179 val_acc=0.5257 val_macro_f1=0.4506
+Epoch 03: train_loss=0.9900 train_acc=0.5505 train_macro_f1=0.5171 val_loss=1.0199 val_acc=0.5243 val_macro_f1=0.4647
+Epoch 04: train_loss=0.9781 train_acc=0.5638 train_macro_f1=0.5276 val_loss=1.0333 val_acc=0.5021 val_macro_f1=0.4487
+Epoch 05: train_loss=0.9567 train_acc=0.5726 train_macro_f1=0.5592 val_loss=1.0467 val_acc=0.4871 val_macro_f1=0.4573
+Epoch 06: train_loss=0.9316 train_acc=0.6147 train_macro_f1=0.5872 val_loss=1.0644 val_acc=0.4986 val_macro_f1=0.4361
+Epoch 07: train_loss=0.8955 train_acc=0.6404 train_macro_f1=0.6311 val_loss=1.0906 val_acc=0.4664 val_macro_f1=0.4291
+Epoch 08: train_loss=0.8413 train_acc=0.6717 train_macro_f1=0.6713 val_loss=1.1444 val_acc=0.4536 val_macro_f1=0.4373
+Epoch 09: train_loss=0.7725 train_acc=0.7048 train_macro_f1=0.7047 val_loss=1.1759 val_acc=0.4193 val_macro_f1=0.4018
+Epoch 10: train_loss=0.6798 train_acc=0.7848 train_macro_f1=0.7829 val_loss=1.2861 val_acc=0.4550 val_macro_f1=0.4232
+Epoch 11: train_loss=0.5864 train_acc=0.8133 train_macro_f1=0.8147 val_loss=1.3927 val_acc=0.4029 val_macro_f1=0.3932
+Epoch 12: train_loss=0.4769 train_acc=0.8759 train_macro_f1=0.8773 val_loss=1.5761 val_acc=0.4329 val_macro_f1=0.4087
+Epoch 13: train_loss=0.3699 train_acc=0.8935 train_macro_f1=0.8954 val_loss=1.7152 val_acc=0.4271 val_macro_f1=0.4032
+Epoch 14: train_loss=0.2799 train_acc=0.9513 train_macro_f1=0.9515 val_loss=1.9922 val_acc=0.4243 val_macro_f1=0.3813
+Epoch 15: train_loss=0.2065 train_acc=0.9737 train_macro_f1=0.9740 val_loss=2.1177 val_acc=0.4364 val_macro_f1=0.4034
+Epoch 16: train_loss=0.1388 train_acc=0.9904 train_macro_f1=0.9903 val_loss=2.4037 val_acc=0.4164 val_macro_f1=0.3859
+Epoch 17: train_loss=0.0899 train_acc=0.9932 train_macro_f1=0.9933 val_loss=2.6176 val_acc=0.4300 val_macro_f1=0.3960
+Epoch 18: train_loss=0.0610 train_acc=0.9970 train_macro_f1=0.9970 val_loss=2.8209 val_acc=0.4314 val_macro_f1=0.3932
+Epoch 19: train_loss=0.0392 train_acc=0.9992 train_macro_f1=0.9992 val_loss=3.0759 val_acc=0.4364 val_macro_f1=0.3935
+Epoch 20: train_loss=0.0254 train_acc=0.9996 train_macro_f1=0.9996 val_loss=3.1674 val_acc=0.4329 val_macro_f1=0.3968
+
+Validation Metrics
+================================
+Accuracy: 0.5057
+Macro F1: 0.4690
+Confusion Matrix:
+[[368 116 131]
+ [117  84 110]
+ [111 107 256]]
+Classification Report:
+              precision    recall  f1-score   support
+
+     HomeWin       0.62      0.60      0.61       615
+        Draw       0.27      0.27      0.27       311
+     AwayWin       0.52      0.54      0.53       474
+
+    accuracy                           0.51      1400
+   macro avg       0.47      0.47      0.47      1400
+weighted avg       0.51      0.51      0.51      1400
+
+Train Metrics
+================================
+Accuracy: 0.5044
+Macro F1: 0.4847
+Accuracy Gap Train-Val: -0.0013
+Macro F1 Gap Train-Val: 0.0158
+Confusion Matrix:
+[[1295  601  425]
+ [ 417  455  406]
+ [ 257  379  779]]
+Classification Report:
+              precision    recall  f1-score   support
+
+     HomeWin       0.66      0.56      0.60      2321
+        Draw       0.32      0.36      0.34      1278
+     AwayWin       0.48      0.55      0.52      1415
+
+    accuracy                           0.50      5014
+   macro avg       0.49      0.49      0.48      5014
+weighted avg       0.52      0.50      0.51      5014
+
+Test Metrics
+================================
+Accuracy: 0.4912
+Macro F1: 0.4457
+Confusion Matrix:
+[[440 132 196]
+ [153  77 187]
+ [115 109 344]]
+Classification Report:
+              precision    recall  f1-score   support
+
+     HomeWin       0.62      0.57      0.60       768
+        Draw       0.24      0.18      0.21       417
+     AwayWin       0.47      0.61      0.53       568
+
+    accuracy                           0.49      1753
+   macro avg       0.45      0.45      0.45      1753
+weighted avg       0.48      0.49      0.48      1753

@@ -1,0 +1,26 @@
+Elo Validation Report
+========================================
+Elo features use the pre-match home_elo and away_elo columns.
+Post-match Elo is computed only after recording those feature values.
+
+Sample Pre/Post Ratings
+========================================
+| Date | Home | Away | FTR | Home pre | Home post | Away pre | Away post |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: |
+| 2002-04-21 | Arsenal | Ipswich | H | 1666.33 | 1671.17 | 1467.80 | 1462.96 |
+| 2006-12-06 | West Ham | Wigan | A | 1491.28 | 1481.55 | 1500.67 | 1510.40 |
+| 2009-03-01 | Hull | Blackburn | A | 1483.89 | 1474.38 | 1500.88 | 1510.39 |
+| 2009-05-02 | Middlesbrough | Man United | A | 1454.45 | 1451.81 | 1782.33 | 1784.96 |
+| 2011-04-23 | Sunderland | Wigan | H | 1484.44 | 1494.32 | 1480.35 | 1470.47 |
+| 2011-10-29 | Chelsea | Arsenal | A | 1708.63 | 1696.67 | 1639.44 | 1651.40 |
+| 2011-11-19 | Norwich | Arsenal | A | 1470.31 | 1465.22 | 1657.15 | 1662.24 |
+| 2012-05-13 | Norwich | Aston Villa | H | 1491.22 | 1502.11 | 1522.01 | 1511.13 |
+| 2019-12-22 | Watford | Man United | H | 1465.71 | 1480.73 | 1657.70 | 1642.67 |
+| 2021-03-08 | Chelsea | Everton | H | 1672.09 | 1680.36 | 1611.43 | 1603.16 |
+| 2022-05-11 | Leicester | Norwich | H | 1569.88 | 1574.56 | 1363.69 | 1359.01 |
+| 2024-10-26 | Brighton | Wolves | D | 1602.90 | 1599.64 | 1485.35 | 1488.61 |
+
+Leakage Check
+========================================
+PASS: model feature columns are pre-match Elo values only.
+PASS: post-match Elo columns are kept out of feature builders.

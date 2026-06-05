@@ -47,13 +47,14 @@ def _minimal_team_rows() -> pd.DataFrame:
             "clean_sheets": [1.0, 0.0, 0.0],
             "failed_to_score": [0.0, 0.0, 1.0],
             "rest_days": [0.0, 7.0, 7.0],
+            "team_elo": [1500.0, 1510.0, 1510.0],
         }
     )
 
 
 def test_raw_feature_mode_output_is_unchanged() -> None:
     assert sequence_features_for_mode(RAW_FEATURE_MODE) == SEQUENCE_FEATURES
-    assert len(sequence_features_for_mode(RAW_FEATURE_MODE)) == 16
+    assert len(sequence_features_for_mode(RAW_FEATURE_MODE)) == 17
 
 
 def test_raw_plus_rolling_feature_count_greater_than_raw() -> None:

@@ -36,6 +36,9 @@ Feature Columns
 season
 is_home
 rest_days
+team_elo
+opponent_elo
+elo_diff
 points_last_3
 points_last_5
 points_last_10
