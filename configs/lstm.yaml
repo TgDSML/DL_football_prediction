@@ -3,26 +3,29 @@ project:
   seed: 42
 
 data:
-  raw_path: data/raw/matches.csv
+  raw_path: data/raw/premier-league
   processed_path: data/processed/matches_processed.csv
   sequence_length: 5
-  target_column: result
+  target_column: FTR
   # If null, auto-detects numeric columns excluding: Date, HomeTeam, AwayTeam, FTR, HTR, result
   feature_columns: null
 
 training:
   model_type: lstm
-  epochs: 5
-  batch_size: 32
-  learning_rate: 0.001
+  epochs: 200
+  batch_size: 16
+  learning_rate: 0.0003
   validation_size: 0.2
   test_size: 0.1
+  patience: 25
+  early_stopping: false
 
 model:
-  input_size: 16
-  hidden_size: 64
-  num_layers: 2
-  dropout: 0.2
+  bidirectional: true
+  classifier_hidden_size: 128
+  hidden_size: 128
+  num_layers: 3
+  dropout: 0.15
   num_classes: 3
 
 outputs:

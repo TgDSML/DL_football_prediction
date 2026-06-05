@@ -1,0 +1,63 @@
+{
+  "class_weights": {
+    "0": 0.8946099290780142,
+    "1": 1.4390582866625183,
+    "2": 0.8946099290780142
+  },
+  "models": {
+    "logistic_regression_weighted": {
+      "type": "LogisticRegression",
+      "params": {
+        "C": 0.1,
+        "max_iter": 5000,
+        "class_weight": {
+          "0": 0.8946099290780142,
+          "1": 1.4390582866625183,
+          "2": 0.8946099290780142
+        },
+        "random_state": 42
+      }
+    },
+    "svm_rbf_weighted": {
+      "type": "SVC",
+      "params": {
+        "kernel": "rbf",
+        "probability": true,
+        "C": 0.1,
+        "gamma": "scale",
+        "class_weight": {
+          "0": 0.8946099290780142,
+          "1": 1.4390582866625183,
+          "2": 0.8946099290780142
+        },
+        "random_state": 42
+      }
+    },
+    "xgboost_weighted": {
+      "type": "XGBClassifier",
+      "params": {
+        "n_estimators": 500,
+        "max_depth": 4,
+        "learning_rate": 0.01,
+        "min_child_weight": 7,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9,
+        "objective": "multi:softprob",
+        "num_class": 3,
+        "eval_metric": "mlogloss",
+        "random_state": 42
+      }
+    },
+    "ensemble_avg_proba": {
+      "type": "ensemble",
+      "params": {
+        "members": [
+          "logistic_regression_weighted",
+          "svm_rbf_weighted",
+          "xgboost_weighted"
+        ],
+        "strategy": "average probabilities"
+      }
+    }
+  }
+}
