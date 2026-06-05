@@ -31,11 +31,20 @@ premvenv
 data/raw/*
 data/processed/*.csv
 data/processed/splits/*.csv
+data/processed/fixture_level/*.csv
+data/processed/sequences/
 outputs/models/*
 outputs/plots/*
 outputs/results/*
 outputs/logs/*
 outputs/reports/*.csv
+outputs/reports/*.txt
+outputs/reports/gru/
+outputs/reports/gru_regularization/
+outputs/reports/long_sequences/
+outputs/reports/raw_plus_rolling/
+outputs/reports/rnn_tuning/
+*.npz
 
 # Keep directory placeholders
 !data/raw/.gitkeep
@@ -46,6 +55,11 @@ outputs/reports/*.csv
 !outputs/plots/.gitkeep
 !outputs/results/.gitkeep
 !outputs/logs/.gitkeep
+!outputs/reports/final_baseline_report.txt
+!outputs/reports/fixture_level_baseline_report.txt
+!outputs/reports/rnn_experiment_summary.txt
+!outputs/reports/gru_experiment_summary.txt
+!outputs/reports/raw_plus_rolling_sequence_results.txt
 
 # OS and editor files
 .DS_Store

@@ -1,0 +1,110 @@
+Raw Plus Rolling Sequence Results
+=================================
+
+Feature Mode
+============
+
+raw_plus_rolling creates:
+
+- 80 features per team timestep
+- 160 concatenated home_away features per timestep
+
+Shapes
+======
+
+home_away seq10 raw_plus_rolling:
+
+- train: X=(6154, 10, 160)
+- val: X=(1500, 10, 160)
+- test: X=(1860, 10, 160)
+
+home_away seq50 raw_plus_rolling:
+
+- train: X=(5014, 50, 160)
+- val: X=(1400, 50, 160)
+- test: X=(1753, 50, 160)
+
+Results
+=======
+
+| Experiment | Feature Mode | Seq | Model | Hidden | Weighting | Test Acc | Test Macro F1 |
+| --- | --- | ---: | --- | ---: | --- | ---: | ---: |
+| rnn_raw_plus_rolling_seq10_h64_none | raw_plus_rolling | 10 | DualScratchRNNClassifier | 64 | none | 0.4855 | 0.4152 |
+| rnn_raw_plus_rolling_seq10_h64_weighted | raw_plus_rolling | 10 | DualScratchRNNClassifier | 64 | balanced | 0.4613 | 0.4207 |
+| gru_raw_plus_rolling_seq50_h128_weighted | raw_plus_rolling | 50 | DualScratchGRUClassifier | 128 | balanced | 0.4792 | 0.4341 |
+| gru_raw_plus_rolling_seq50_h128_weighted_dropout03_wd1e4 | raw_plus_rolling | 50 | DualScratchGRUClassifier | 128 | balanced | 0.4792 | 0.4519 |
+
+Comparison Baselines
+====================
+
+Best raw-sequence RNN accuracy:
+
+- home_away_seq10 raw
+- accuracy: 0.5204
+- macro F1: 0.3938
+
+Best raw weighted RNN:
+
+- home_away_seq10_weighted raw
+- accuracy: 0.5022
+- macro F1: 0.4452
+
+Best raw-sequence GRU macro F1:
+
+- gru_seq50_h128_weighted raw
+- accuracy: 0.4940
+- macro F1: 0.4549
+
+Classical fixture-level baseline:
+
+- best accuracy: 0.5211
+- best macro F1: 0.4237
+
+Answers
+=======
+
+1. How many features per timestep does raw_plus_rolling create?
+
+80 per team timestep and 160 for concatenated home_away tensors.
+
+2. Does adding engineered rolling features improve accuracy?
+
+No. The best raw_plus_rolling accuracy is 0.4855, below the best raw sequence
+accuracy of 0.5204 and below the fixture-level classical ML accuracy of 0.5211.
+
+3. Does it improve macro F1?
+
+Not versus the best raw recurrent models. The best raw_plus_rolling macro F1 is
+0.4519, below the best raw GRU macro F1 of 0.4549. It is slightly above the
+best raw weighted RNN macro F1 of 0.4452 and above the classical fixture-level
+macro F1 of 0.4237.
+
+4. Does it beat the best raw-sequence RNN accuracy 0.5204?
+
+No.
+
+5. Does it beat the best raw-sequence GRU macro F1 0.4549?
+
+No. The closest result is the regularized augmented GRU at 0.4519.
+
+6. Does it beat or approach the classical ML baseline?
+
+It beats the classical fixture-level macro F1 reference of 0.4237, but it does
+not approach the classical accuracy reference of 0.5211.
+
+7. Is the neural bottleneck mainly architecture or feature representation?
+
+The augmented features alone do not solve the bottleneck. They increase input
+dimensionality substantially and appear to make overfitting easier. The
+regularized GRU nearly matches the best raw GRU macro F1, but accuracy remains
+well below the best raw RNN and classical baselines.
+
+Recommendation
+==============
+
+Do not replace the raw sequence baseline with raw_plus_rolling yet. The feature
+representation is richer, but the current recurrent architectures do not use it
+well enough without overfitting.
+
+Proceed to scratch LSTM while keeping raw_plus_rolling available as an optional
+feature mode for controlled LSTM comparisons.
