@@ -1,0 +1,35 @@
+CNN+LSTM training summary
+========================
+
+Selection rule:
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Best sequence length: 3
+Best run ID: cnn_lstm_seq3
+
+Best validation metrics:
+  Loss: 1.062579
+  Accuracy: 0.512550
+  Macro F1: 0.466039
+  Weighted F1: 0.504897
+
+Best test metrics:
+  Loss: 1.083065
+  Accuracy: 0.476467
+  Macro F1: 0.437357
+  Weighted F1: 0.473371
+
+Per-sequence-length best runs:
+ sequence_length         run_id  learning_rate  dropout  batch_size  best_epoch  val_loss  val_accuracy  val_f1_macro  val_f1_weighted  test_loss  test_accuracy  test_f1_macro  test_f1_weighted                                  report_path
+               3  cnn_lstm_seq3         0.0003      0.3          64          19  1.062579      0.512550      0.466039         0.504897   1.083065       0.476467       0.437357          0.473371  artifacts\cnn_lstm\cnn_lstm_seq3_report.txt
+               5  cnn_lstm_seq5         0.0003      0.3          64          25  1.172311      0.517219      0.459606         0.499071   1.159281       0.481698       0.416589          0.459414  artifacts\cnn_lstm\cnn_lstm_seq5_report.txt
+              10 cnn_lstm_seq10         0.0003      0.3          64           2  1.002449      0.528000      0.410443         0.470998   1.010470       0.519251       0.389476          0.451105 artifacts\cnn_lstm\cnn_lstm_seq10_report.txt
+
+Saved files:
+- results.csv
+- best_by_group.csv
+- overall_best.json
+- summary.txt
+- *_report.txt

@@ -1,0 +1,67 @@
+Run ID: batch_conv2d_seq10_lr0.0003_drop0.20_bs32
+Stage: batch
+Model type: conv2d
+Sequence length: 10
+Num features: 162
+Learning rate: 0.0003
+Dropout: 0.2
+Batch size: 32
+Best epoch: 30
+
+Primary selection metrics
+-------------------------
+Validation Macro F1: 0.426253
+Validation Accuracy: 0.442000
+Validation Loss: 1.602694
+
+Validation metrics
+------------------
+Loss: 1.602694
+Accuracy: 0.442000
+Macro F1: 0.426253
+Weighted F1: 0.450782
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5821    0.4621    0.5152       660
+        Draw     0.2511    0.3333    0.2864       339
+     AwayWin     0.4658    0.4890    0.4771       501
+
+    accuracy                         0.4420      1500
+   macro avg     0.4330    0.4282    0.4263      1500
+weighted avg     0.4684    0.4420    0.4508      1500
+
+
+Validation confusion matrix
+---------------------------
+[[305 192 163]
+ [108 113 118]
+ [111 145 245]]
+
+Test metrics
+------------
+Loss: 1.587751
+Accuracy: 0.443316
+Macro F1: 0.424769
+Weighted F1: 0.448814
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5917    0.4638    0.5200       828
+        Draw     0.2534    0.2908    0.2708       447
+     AwayWin     0.4449    0.5294    0.4835       595
+
+    accuracy                         0.4433      1870
+   macro avg     0.4300    0.4280    0.4248      1870
+weighted avg     0.4641    0.4433    0.4488      1870
+
+
+Test confusion matrix
+---------------------
+[[384 237 207]
+ [131 130 186]
+ [134 146 315]]

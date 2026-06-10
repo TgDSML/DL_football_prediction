@@ -53,3 +53,7 @@ premier-league
 *.joblib
 *pkl
 *configs.json
+*.npz
+*.json
+*pth
+*pt

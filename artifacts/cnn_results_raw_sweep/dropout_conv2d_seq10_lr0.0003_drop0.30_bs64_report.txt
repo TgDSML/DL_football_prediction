@@ -1,0 +1,67 @@
+Run ID: dropout_conv2d_seq10_lr0.0003_drop0.30_bs64
+Stage: dropout
+Model type: conv2d
+Sequence length: 10
+Num features: 162
+Learning rate: 0.0003
+Dropout: 0.3
+Batch size: 64
+Best epoch: 20
+
+Primary selection metrics
+-------------------------
+Validation Macro F1: 0.392100
+Validation Accuracy: 0.532667
+Validation Loss: 0.996110
+
+Validation metrics
+------------------
+Loss: 0.996110
+Accuracy: 0.532667
+Macro F1: 0.392100
+Weighted F1: 0.460761
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5345    0.7985    0.6403       660
+        Draw     0.0000    0.0000    0.0000       339
+     AwayWin     0.5292    0.5429    0.5360       501
+
+    accuracy                         0.5327      1500
+   macro avg     0.3546    0.4471    0.3921      1500
+weighted avg     0.4119    0.5327    0.4608      1500
+
+
+Validation confusion matrix
+---------------------------
+[[527   0 133]
+ [230   0 109]
+ [229   0 272]]
+
+Test metrics
+------------
+Loss: 1.007516
+Accuracy: 0.520321
+Macro F1: 0.383848
+Weighted F1: 0.446198
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5402    0.7862    0.6404       828
+        Draw     0.0000    0.0000    0.0000       447
+     AwayWin     0.4842    0.5412    0.5111       595
+
+    accuracy                         0.5203      1870
+   macro avg     0.3415    0.4425    0.3838      1870
+weighted avg     0.3933    0.5203    0.4462      1870
+
+
+Test confusion matrix
+---------------------
+[[651   0 177]
+ [281   0 166]
+ [273   0 322]]

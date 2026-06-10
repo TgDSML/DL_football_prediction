@@ -1,0 +1,63 @@
+Run ID: hybrid_seq5
+Model type: hybrid
+Sequence length: 5
+Num features: 162
+Best epoch: 12
+
+Primary selection metrics
+-------------------------
+Validation Macro F1: 0.446679
+Validation Accuracy: 0.488742
+Validation Loss: 1.225445
+
+Validation metrics
+------------------
+Loss: 1.225445
+Accuracy: 0.488742
+Macro F1: 0.446679
+Weighted F1: 0.482662
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5626    0.6556    0.6056       665
+        Draw     0.2752    0.2632    0.2691       342
+     AwayWin     0.5196    0.4215    0.4654       503
+
+    accuracy                         0.4887      1510
+   macro avg     0.4525    0.4468    0.4467      1510
+weighted avg     0.4832    0.4887    0.4827      1510
+
+
+Validation confusion matrix
+---------------------------
+[[436 120 109]
+ [165  90  87]
+ [174 117 212]]
+
+Test metrics
+------------
+Loss: 1.209402
+Accuracy: 0.448806
+Macro F1: 0.399925
+Weighted F1: 0.438114
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5299    0.5962    0.5611       832
+        Draw     0.1960    0.1511    0.1706       450
+     AwayWin     0.4684    0.4677    0.4680       603
+
+    accuracy                         0.4488      1885
+   macro avg     0.3981    0.4050    0.3999      1885
+weighted avg     0.4305    0.4488    0.4381      1885
+
+
+Test confusion matrix
+---------------------
+[[496 156 180]
+ [242  68 140]
+ [198 123 282]]

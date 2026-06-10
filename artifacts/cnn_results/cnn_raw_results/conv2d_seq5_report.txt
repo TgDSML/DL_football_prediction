@@ -1,0 +1,63 @@
+Run ID: conv2d_seq5
+Model type: conv2d
+Sequence length: 5
+Num features: 162
+Best epoch: 12
+
+Primary selection metrics
+-------------------------
+Validation Macro F1: 0.386128
+Validation Accuracy: 0.526490
+Validation Loss: 1.001679
+
+Validation metrics
+------------------
+Loss: 1.001679
+Accuracy: 0.526490
+Macro F1: 0.386128
+Weighted F1: 0.454080
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5255    0.8045    0.6358       665
+        Draw     0.0000    0.0000    0.0000       342
+     AwayWin     0.5285    0.5169    0.5226       503
+
+    accuracy                         0.5265      1510
+   macro avg     0.3513    0.4405    0.3861      1510
+weighted avg     0.4075    0.5265    0.4541      1510
+
+
+Validation confusion matrix
+---------------------------
+[[535   0 130]
+ [240   0 102]
+ [243   0 260]]
+
+Test metrics
+------------
+Loss: 1.009454
+Accuracy: 0.507162
+Macro F1: 0.372415
+Weighted F1: 0.433562
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5224    0.7837    0.6269       832
+        Draw     0.0000    0.0000    0.0000       450
+     AwayWin     0.4772    0.5041    0.4903       603
+
+    accuracy                         0.5072      1885
+   macro avg     0.3332    0.4293    0.3724      1885
+weighted avg     0.3833    0.5072    0.4336      1885
+
+
+Test confusion matrix
+---------------------
+[[652   0 180]
+ [297   0 153]
+ [299   0 304]]

@@ -1,0 +1,52 @@
+======================================================================
+CNN MODEL EVALUATION REPORT
+======================================================================
+Timestamp: 20260604_202136
+
+OVERALL METRICS
+----------------------------------------------------------------------
+accuracy                       0.4344
+weighted_precision             0.4864
+weighted_recall                0.4344
+weighted_f1                    0.4419
+macro_precision                0.4449
+macro_recall                   0.4302
+macro_f1                       0.4220
+total_samples                  1860
+
+PER-CLASS METRICS
+----------------------------------------------------------------------
+Away Win:
+  precision                  0.4209
+  recall                     0.5659
+  f1                         0.4827
+  support                    592
+  accuracy                   0.5659
+
+Draw:
+  precision                  0.2566
+  recall                     0.3266
+  f1                         0.2874
+  support                    444
+  accuracy                   0.3266
+
+Home Win:
+  precision                  0.6573
+  recall                     0.3981
+  f1                         0.4958
+  support                    824
+  accuracy                   0.3981
+
+CONFUSION MATRIX
+----------------------------------------------------------------------
+               pred_away  pred_draw  pred_home
+true_away_win          335        192         65
+true_draw              193        145        106
+true_home_win          268        228        328
+
+PROBABILITY STATISTICS
+----------------------------------------------------------------------
+mean_max_probability           0.4289
+mean_entropy                   1.0515
+confidence_std                 0.0542
+======================================================================

@@ -1,0 +1,63 @@
+Run ID: conv1d_seq10
+Model type: conv1d
+Sequence length: 10
+Num features: 162
+Best epoch: 6
+
+Primary selection metrics
+-------------------------
+Validation Macro F1: 0.438635
+Validation Accuracy: 0.533333
+Validation Loss: 0.990720
+
+Validation metrics
+------------------
+Loss: 0.990720
+Accuracy: 0.533333
+Macro F1: 0.438635
+Weighted F1: 0.492931
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5571    0.7394    0.6354       660
+        Draw     0.2947    0.0826    0.1290       339
+     AwayWin     0.5369    0.5669    0.5515       501
+
+    accuracy                         0.5333      1500
+   macro avg     0.4629    0.4630    0.4386      1500
+weighted avg     0.4910    0.5333    0.4929      1500
+
+
+Validation confusion matrix
+---------------------------
+[[488  34 138]
+ [204  28 107]
+ [184  33 284]]
+
+Test metrics
+------------
+Loss: 1.011792
+Accuracy: 0.510695
+Macro F1: 0.403929
+Weighted F1: 0.459010
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5589    0.7162    0.6278       828
+        Draw     0.1951    0.0358    0.0605       447
+     AwayWin     0.4759    0.5815    0.5234       595
+
+    accuracy                         0.5107      1870
+   macro avg     0.4100    0.4445    0.4039      1870
+weighted avg     0.4455    0.5107    0.4590      1870
+
+
+Test confusion matrix
+---------------------
+[[593  38 197]
+ [247  16 184]
+ [221  28 346]]

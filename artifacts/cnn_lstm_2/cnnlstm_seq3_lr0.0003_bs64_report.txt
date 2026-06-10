@@ -1,0 +1,69 @@
+Run ID: cnnlstm_seq3_lr0.0003_bs64
+Model type: cnnlstm
+Sequence length: 3
+Num features: 162
+Learning rate: 0.0003
+Batch size: 64
+Dropout: 0.3
+LSTM hidden size: 128
+LSTM layers: 1
+Bidirectional: False
+Best epoch: 29
+
+Selection rule
+--------------
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Validation metrics
+------------------
+Loss: 1.660627
+Accuracy: 0.486790
+Macro F1: 0.446199
+Weighted F1: 0.480226
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5563    0.6213    0.5870       668
+        Draw     0.2951    0.2478    0.2694       343
+     AwayWin     0.4938    0.4712    0.4822       503
+
+    accuracy                         0.4868      1514
+   macro avg     0.4484    0.4467    0.4462      1514
+weighted avg     0.4764    0.4868    0.4802      1514
+
+
+Validation confusion matrix
+---------------------------
+[[415 115 138]
+ [153  85 105]
+ [178  88 237]]
+
+Test metrics
+------------
+Loss: 1.631349
+Accuracy: 0.429931
+Macro F1: 0.389589
+Weighted F1: 0.423808
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5353    0.5360    0.5357       834
+        Draw     0.2099    0.1685    0.1870       451
+     AwayWin     0.4179    0.4785    0.4462       606
+
+    accuracy                         0.4299      1891
+   macro avg     0.3877    0.3943    0.3896      1891
+weighted avg     0.4201    0.4299    0.4238      1891
+
+
+Test confusion matrix
+---------------------
+[[447 162 225]
+ [196  76 179]
+ [192 124 290]]

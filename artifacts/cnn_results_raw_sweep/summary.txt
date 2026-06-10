@@ -1,0 +1,47 @@
+CNN raw sequential sweep summary
+================================
+
+Fixed best raw model from baseline: conv2d
+Fixed sequence length from baseline: 10
+
+Selection rule:
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Best learning rate: 0.0003
+Best dropout: 0.2
+Best batch size: 128
+
+Saved files:
+- lr_sweep_results.csv
+- lr_sweep_ranked.csv
+- lr_sweep_best.json
+- dropout_sweep_results.csv
+- dropout_sweep_ranked.csv
+- dropout_sweep_best.json
+- batch_sweep_results.csv
+- batch_sweep_ranked.csv
+- batch_sweep_best.json
+- all_sweep_results.csv
+- overall_best.json
+- *_report.txt
+
+Overall best run:
+stage                                                           batch
+run_id                     batch_conv2d_seq10_lr0.0003_drop0.20_bs128
+model_type                                                     conv2d
+sequence_length                                                    10
+learning_rate                                                  0.0003
+dropout                                                           0.2
+batch_size                                                        128
+best_epoch                                                         30
+val_loss                                                     1.082516
+val_accuracy                                                 0.489333
+val_f1_macro                                                 0.440309
+val_f1_weighted                                              0.478683
+test_loss                                                    1.092436
+test_accuracy                                                0.465241
+test_f1_macro                                                0.410176
+test_f1_weighted                                             0.448181
+report_path         artifacts\cnn_results_raw_sweep\batch_conv2d_s...

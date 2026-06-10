@@ -1,0 +1,63 @@
+Run ID: cnn_lstm_seq5
+Sequence length: 5
+Learning rate: 0.0003
+Dropout: 0.3
+Batch size: 64
+Best epoch: 25
+
+Selection rule:
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Validation metrics
+------------------
+Loss: 1.172311
+Accuracy: 0.517219
+Macro F1: 0.459606
+Weighted F1: 0.499071
+
+Validation classification report
+--------------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5566    0.7248    0.6297       665
+        Draw     0.3274    0.2164    0.2606       342
+     AwayWin     0.5383    0.4473    0.4886       503
+
+    accuracy                         0.5172      1510
+   macro avg     0.4741    0.4628    0.4596      1510
+weighted avg     0.4986    0.5172    0.4991      1510
+
+
+Validation confusion matrix
+---------------------------
+[[482  68 115]
+ [190  74  78]
+ [194  84 225]]
+
+Test metrics
+------------
+Loss: 1.159281
+Accuracy: 0.481698
+Macro F1: 0.416589
+Weighted F1: 0.459414
+
+Test classification report
+--------------------------
+              precision    recall  f1-score   support
+
+     HomeWin     0.5464    0.6791    0.6056       832
+        Draw     0.2346    0.1356    0.1718       450
+     AwayWin     0.4772    0.4677    0.4724       603
+
+    accuracy                         0.4817      1885
+   macro avg     0.4194    0.4274    0.4166      1885
+weighted avg     0.4498    0.4817    0.4594      1885
+
+
+Test confusion matrix
+---------------------
+[[565  99 168]
+ [248  61 141]
+ [221 100 282]]

@@ -1,0 +1,40 @@
+CNN raw results summary
+=======================
+
+Primary ranking metrics:
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Saved readable outputs:
+- results.csv
+- best_by_group.csv
+- overall_best.json
+- *_report.txt
+
+Best by group:
+model_type  sequence_length       run_id  best_epoch  val_loss  val_accuracy  val_f1_macro  val_f1_weighted  test_loss  test_accuracy  test_f1_macro  test_f1_weighted                                                   report_path
+    conv1d                3  conv1d_seq3          19  1.479109      0.495376      0.447735         0.485492   1.417264       0.471179       0.418021          0.458676  artifacts\cnn_results\cnn_raw_results\conv1d_seq3_report.txt
+    conv1d                5  conv1d_seq5          26  1.812011      0.500000      0.453244         0.487730   1.831361       0.473210       0.411994          0.453414  artifacts\cnn_results\cnn_raw_results\conv1d_seq5_report.txt
+    conv1d               10 conv1d_seq10           6  0.990720      0.533333      0.438635         0.492931   1.011792       0.510695       0.403929          0.459010 artifacts\cnn_results\cnn_raw_results\conv1d_seq10_report.txt
+    conv2d                3  conv2d_seq3          17  1.030150      0.509247      0.379712         0.444929   1.028170       0.505024       0.377502          0.437301  artifacts\cnn_results\cnn_raw_results\conv2d_seq3_report.txt
+    conv2d                5  conv2d_seq5          12  1.001679      0.526490      0.386128         0.454080   1.009454       0.507162       0.372415          0.433562  artifacts\cnn_results\cnn_raw_results\conv2d_seq5_report.txt
+    conv2d               10 conv2d_seq10          25  1.044584      0.520000      0.423669         0.476910   1.045713       0.512299       0.408185          0.460931 artifacts\cnn_results\cnn_raw_results\conv2d_seq10_report.txt
+    hybrid                3  hybrid_seq3          14  1.354800      0.505284      0.466664         0.500858   1.359371       0.454786       0.410014          0.447349  artifacts\cnn_results\cnn_raw_results\hybrid_seq3_report.txt
+    hybrid                5  hybrid_seq5          12  1.225445      0.488742      0.446679         0.482662   1.209402       0.448806       0.399925          0.438114  artifacts\cnn_results\cnn_raw_results\hybrid_seq5_report.txt
+    hybrid               10 hybrid_seq10          15  1.385254      0.502667      0.450011         0.489382   1.397680       0.470588       0.413793          0.452931 artifacts\cnn_results\cnn_raw_results\hybrid_seq10_report.txt
+
+Overall best:
+model_type                                                     hybrid
+sequence_length                                                     3
+run_id                                                    hybrid_seq3
+best_epoch                                                         14
+val_loss                                                       1.3548
+val_accuracy                                                 0.505284
+val_f1_macro                                                 0.466664
+val_f1_weighted                                              0.500858
+test_loss                                                    1.359371
+test_accuracy                                                0.454786
+test_f1_macro                                                0.410014
+test_f1_weighted                                             0.447349
+report_path         artifacts\cnn_results\cnn_raw_results\hybrid_s...

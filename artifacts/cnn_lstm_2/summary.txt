@@ -1,0 +1,39 @@
+CNN+LSTM training summary
+=========================
+
+Selection rule:
+1. Validation Macro F1
+2. Validation Accuracy
+3. Validation Loss
+
+Model type: cnnlstm
+Variant: home_away
+Sequence lengths tried: [3, 5, 10]
+Learning rate: 0.0003
+Batch size: 64
+Dropout: 0.3
+LSTM hidden size: 128
+LSTM layers: 1
+Bidirectional: False
+Use pooling summary: True
+
+Overall best run:
+run_id                                    cnnlstm_seq10_lr0.0003_bs64
+model_type                                                    cnnlstm
+sequence_length                                                    10
+learning_rate                                                  0.0003
+batch_size                                                         64
+dropout                                                           0.3
+lstm_hidden_size                                                  128
+lstm_layers                                                         1
+bidirectional                                                   False
+best_epoch                                                         26
+val_loss                                                     1.390378
+val_accuracy                                                    0.516
+val_f1_macro                                                 0.473068
+val_f1_weighted                                              0.506958
+test_loss                                                    1.371204
+test_accuracy                                                0.471123
+test_f1_macro                                                0.419354
+test_f1_weighted                                             0.459226
+report_path         artifacts\cnn_lstm_2\cnnlstm_seq10_lr0.0003_bs...
