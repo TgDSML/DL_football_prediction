@@ -62,16 +62,23 @@ def report_path(experiment_name: str, report_dir: str | None = None) -> Path:
     return PROJECT_ROOT / f"outputs/reports/dual_rnn_from_scratch_{experiment_name}.txt"
 
 
+def build_command_for_sequence_length(sequence_length: int) -> str:
+    return f"python scripts/build_sequences.py --sequence-length {sequence_length} --variants home_away"
+
+
 def load_split(
     sequence_dir: Path,
     prefix: str,
     split_name: str,
+    sequence_length: int,
 ) -> tuple[np.ndarray, np.ndarray, pd.DataFrame, list[str]]:
     npz_path = sequence_dir / f"{prefix}_{split_name}.npz"
     metadata_path = sequence_dir / f"{prefix}_{split_name}_metadata.csv"
     if not npz_path.exists() or not metadata_path.exists():
+        missing_paths = [str(path) for path in (npz_path, metadata_path) if not path.exists()]
         raise FileNotFoundError(
-            f"Missing {prefix} sequence files for {split_name}. Run `python scripts/build_sequences.py --sequence-length <N> --variants home_away` first."
+            f"Missing {prefix} sequence artifact(s) for {split_name}: {', '.join(missing_paths)}. "
+            f"Build them first with `{build_command_for_sequence_length(sequence_length)}`."
         )
 
     arrays = np.load(npz_path, allow_pickle=False)
@@ -363,9 +370,9 @@ def main() -> None:
     sequence_dir = Path(args.sequence_dir)
     prefix = prefix_for_sequence_length(args.sequence_length)
 
-    train_X, train_y, train_meta, feature_names = load_split(sequence_dir, prefix, "train")
-    val_X, val_y, val_meta, val_feature_names = load_split(sequence_dir, prefix, "val")
-    test_X, test_y, test_meta, test_feature_names = load_split(sequence_dir, prefix, "test")
+    train_X, train_y, train_meta, feature_names = load_split(sequence_dir, prefix, "train", args.sequence_length)
+    val_X, val_y, val_meta, val_feature_names = load_split(sequence_dir, prefix, "val", args.sequence_length)
+    test_X, test_y, test_meta, test_feature_names = load_split(sequence_dir, prefix, "test", args.sequence_length)
     if feature_names != val_feature_names or feature_names != test_feature_names:
         raise ValueError("Feature name mismatch across saved sequence splits.")
 

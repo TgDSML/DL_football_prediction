@@ -18,7 +18,7 @@ from torch.utils.data import DataLoader, WeightedRandomSampler
 from src.config import ExperimentConfig
 from src.dataset import FootballSequenceDataset, MatchBatch
 from src.evaluation.metrics import compute_metrics
-from src.features.sequences import build_team_form_sequences
+from src.features.sequences import SEQUENCE_FEATURES, build_team_form_sequences
 from src.model import build_model
 from src.utils import ensure_dir, get_device, set_seed
 
@@ -152,33 +152,9 @@ class LSTMPipeline:
 
         model_type = str(self.config.get("training", "model_type", default="lstm"))
         if feature_cols is None and model_type == "lstm":
-            # Use predictive, pre-match process stats only for the LSTM.
-            # Drop result-linked goal columns and derive agnostic match-level differences.
-            process_cols = [
-                "HS",
-                "AS",
-                "HST",
-                "AST",
-                "HF",
-                "AF",
-                "HC",
-                "AC",
-                "HY",
-                "AY",
-                "HR",
-                "AR",
-            ]
-            diff_cols = {
-                "Shots_Diff": ("HS", "AS"),
-                "Shots_On_Target_Diff": ("HST", "AST"),
-                "Corners_Diff": ("HC", "AC"),
-                "Fouls_Diff": ("HF", "AF"),
-                "Yellow_Cards_Diff": ("HY", "AY"),
-                "Red_Cards_Diff": ("HR", "AR"),
-            }
-            for new_col, (home_col, away_col) in diff_cols.items():
-                df[new_col] = df[home_col] - df[away_col]
-            feature_cols = process_cols + list(diff_cols.keys())
+            # Use canonical strict-prior team-history features. The sequence
+            # builder excludes the target fixture row before selecting features.
+            feature_cols = list(SEQUENCE_FEATURES)
         elif feature_cols is None:
             # Auto-detect numeric columns (excluding known non-feature columns)
             exclude_cols = {"Date", "HomeTeam", "AwayTeam", "FTR", "HTR", "result"}

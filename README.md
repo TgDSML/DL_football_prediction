@@ -148,12 +148,16 @@ python scripts\build_sequences.py
 Optional examples:
 
 ```powershell
+python scripts\build_sequences.py --variants home_only
 python scripts\build_sequences.py --sequence-length 10 --variants home_away
 python scripts\build_sequences.py --feature-mode raw_plus_rolling --sequence-length 50 --variants home_away
 ```
 
 This writes generated arrays and metadata under `data/processed/sequences/`.
-Those files are build artifacts and are intentionally ignored by git.
+For `--feature-mode raw_plus_rolling`, outputs are written under
+`data/processed/sequences/raw_plus_rolling/`. These files are build artifacts
+and are intentionally ignored by git, so a fresh clone must rebuild them before
+running scratch RNN/GRU scripts.
 
 The feature builder converts each fixture into two team-perspective rows, one
 for each team. It then computes shifted rolling form features over the previous
@@ -258,6 +262,7 @@ strongest fixture-level macro F1 is logistic regression at `0.4237`.
 Build sequence datasets before running scratch recurrent experiments:
 
 ```powershell
+python scripts\build_sequences.py --variants home_only
 python scripts\build_sequences.py --sequence-length 10 --variants home_away
 ```
 
@@ -265,8 +270,8 @@ Train scratch RNN/GRU experiments:
 
 ```powershell
 python scripts\train_rnn_from_scratch.py
-python scripts\train_dual_rnn_from_scratch.py --sequence-length 10
-python scripts\train_gru_from_scratch.py --sequence-length 10
+python scripts\train_dual_rnn_from_scratch.py --sequence-length 10 --experiment-name dual_rnn_seq10
+python scripts\train_gru_from_scratch.py --sequence-length 10 --experiment-name gru_seq10
 ```
 
 ## Modeling Plan

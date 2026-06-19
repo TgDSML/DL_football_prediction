@@ -321,6 +321,53 @@ def prepare_team_rows_for_feature_mode(
     raise ValueError(f"Unsupported feature_mode: {feature_mode}")
 
 
+def build_team_form_sequences(
+    matches: pd.DataFrame,
+    team_column: str,
+    sort_column: str,
+    feature_columns: list[str],
+    sequence_length: int,
+) -> dict[int, pd.DataFrame]:
+    """Build strict-prior team-perspective windows keyed by target match row.
+
+    This compatibility helper is used by the LSTM pipeline. It intentionally
+    derives features from prior team-perspective match rows and never includes
+    the target fixture row in the returned sequence.
+    """
+
+    if team_column not in {"HomeTeam", "AwayTeam"}:
+        raise ValueError(f"Unsupported team column: {team_column}")
+    if sort_column != "Date":
+        raise ValueError("build_team_form_sequences expects Date ordering")
+
+    working = matches.copy()
+    if "match_id" not in working.columns:
+        working["match_id"] = working.index
+    if "season" not in working.columns:
+        working["season"] = "unknown"
+    working["Date"] = pd.to_datetime(working["Date"], errors="raise")
+
+    team_rows = prepare_team_rows_for_feature_mode(working, RAW_FEATURE_MODE)
+    histories = _build_team_history_index(team_rows)
+
+    missing_features = [col for col in feature_columns if col not in team_rows.columns]
+    if missing_features:
+        raise ValueError(f"Missing sequence feature columns: {missing_features}")
+
+    sequences: dict[int, pd.DataFrame] = {}
+    for match in working.sort_values(["Date", "match_id"]).itertuples():
+        team_name = getattr(match, team_column)
+        history = histories.get(team_name)
+        if history is None:
+            continue
+        window = _strict_prior_history(history, match.Date, sequence_length)
+        if window is None:
+            continue
+        sequences[int(match.Index)] = window[feature_columns].copy()
+
+    return sequences
+
+
 def _split_bounds(raw_dir: Path = RAW_DIR) -> tuple[pd.Timestamp, pd.Timestamp]:
     raw_split_paths = require_raw_split_files(raw_dir)
     raw_train = pd.read_csv(raw_split_paths["train"])

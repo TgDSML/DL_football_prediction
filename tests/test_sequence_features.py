@@ -11,6 +11,7 @@ from src.features.sequences import (
     SEQUENCE_FEATURES,
     HomeOnlySequenceBuildResult,
     SequenceSplit,
+    build_team_form_sequences,
     _strict_prior_history,
     add_shifted_rolling_sequence_features,
     save_home_only_sequences,
@@ -72,6 +73,46 @@ def test_strict_prior_history_excludes_target_fixture_date() -> None:
     assert prior is not None
     assert prior["Date"].max() < target_date
     assert 3 not in prior["match_id"].tolist()
+
+
+def test_lstm_sequence_helper_uses_strict_prior_team_rows() -> None:
+    matches = pd.DataFrame(
+        {
+            "Date": pd.to_datetime(
+                ["2020-01-01", "2020-01-08", "2020-01-15", "2020-01-22"]
+            ),
+            "season": ["2020", "2020", "2020", "2020"],
+            "HomeTeam": ["A", "A", "A", "A"],
+            "AwayTeam": ["B", "C", "D", "E"],
+            "FTHG": [1, 2, 3, 4],
+            "FTAG": [0, 1, 2, 3],
+            "FTR": ["H", "H", "H", "H"],
+            "HS": [10, 11, 12, 13],
+            "AS": [5, 6, 7, 8],
+            "HST": [4, 5, 6, 7],
+            "AST": [1, 2, 3, 4],
+            "HC": [2, 3, 4, 5],
+            "AC": [1, 2, 3, 4],
+            "HY": [0, 1, 2, 3],
+            "AY": [1, 1, 1, 1],
+            "HR": [0, 0, 0, 0],
+            "AR": [0, 0, 0, 0],
+        }
+    )
+
+    sequences = build_team_form_sequences(
+        matches,
+        "HomeTeam",
+        "Date",
+        ["points", "goals_for"],
+        sequence_length=2,
+    )
+
+    assert 2 in sequences
+    assert 3 in sequences
+    assert sequences[2]["goals_for"].tolist() == [1, 2]
+    assert sequences[3]["goals_for"].tolist() == [2, 3]
+    assert 4 not in sequences[3]["goals_for"].tolist()
 
 
 def test_rolling_features_for_timestep_do_not_include_that_match() -> None:

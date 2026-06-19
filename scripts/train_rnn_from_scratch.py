@@ -49,12 +49,27 @@ def experiment_report_path(experiment_name: str) -> Path:
     return PROJECT_ROOT / f"outputs/reports/rnn_from_scratch_{experiment_name}_report.txt"
 
 
+def build_command_for_prefix(prefix: str) -> str:
+    if prefix == HOME_ONLY_PREFIX:
+        return "python scripts/build_sequences.py --variants home_only"
+
+    seq_prefix = f"{HOME_ONLY_PREFIX}_seq"
+    if prefix.startswith(seq_prefix):
+        sequence_length = prefix.removeprefix(seq_prefix)
+        if sequence_length.isdigit():
+            return f"python scripts/build_sequences.py --sequence-length {sequence_length} --variants home_only"
+
+    return "python scripts/build_sequences.py --variants home_only"
+
+
 def load_split(sequence_dir: Path, prefix: str, split_name: str) -> tuple[np.ndarray, np.ndarray, pd.DataFrame, list[str]]:
     npz_path = sequence_dir / f"{prefix}_{split_name}.npz"
     metadata_path = sequence_dir / f"{prefix}_{split_name}_metadata.csv"
     if not npz_path.exists() or not metadata_path.exists():
+        missing_paths = [str(path) for path in (npz_path, metadata_path) if not path.exists()]
         raise FileNotFoundError(
-            f"Missing sequence files for {split_name}. Run `python scripts/build_sequences.py` first."
+            f"Missing sequence artifact(s) for {split_name}: {', '.join(missing_paths)}. "
+            f"Build them first with `{build_command_for_prefix(prefix)}`."
         )
 
     arrays = np.load(npz_path, allow_pickle=False)
