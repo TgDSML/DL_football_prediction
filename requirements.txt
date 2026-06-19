@@ -11,3 +11,4 @@ optuna
 tqdm
 pyyaml
 pytest
+requests

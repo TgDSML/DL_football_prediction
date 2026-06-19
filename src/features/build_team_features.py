@@ -10,6 +10,7 @@ from src.features.elo import compute_elo_ratings, team_elo_features
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data/raw"
+RAW_SEASON_DIR = RAW_DIR / "premier-league"
 PROCESSED_DATA_PATH = PROJECT_ROOT / "data/processed/team_centric_features.csv"
 PROCESSED_SPLIT_DIR = PROJECT_ROOT / "data/processed/splits"
 REPORT_PATH = PROJECT_ROOT / "outputs/reports/preprocessing_report.txt"
@@ -96,18 +97,25 @@ def season_code_from_path(path: Path) -> str:
 
 
 def load_raw_matches(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
+    season_dir = RAW_SEASON_DIR if raw_dir == RAW_DIR else raw_dir / "premier-league"
     paths = sorted(
         path
-        for path in raw_dir.glob("season-*.csv")
+        for path in season_dir.glob("season-*.csv")
         if "splits" not in path.parts
     )
+    if not paths:
+        paths = sorted(
+            path
+            for path in raw_dir.glob("season-*.csv")
+            if "splits" not in path.parts
+        )
     if not paths:
         split_dir = raw_dir / "splits"
         paths = [split_dir / name for name in ("train.csv", "val.csv", "test.csv")]
         paths = [path for path in paths if path.exists()]
     if not paths:
         raise FileNotFoundError(
-            f"No season CSV files found in {raw_dir} and no split CSV files found "
+            f"No season CSV files found in {season_dir} and no split CSV files found "
             f"in {raw_dir / 'splits'}"
         )
 
@@ -165,7 +173,7 @@ def require_raw_split_files(raw_dir: Path = RAW_DIR) -> dict[str, Path]:
         raise FileNotFoundError(
             "Missing raw split CSV file(s): "
             f"{missing_list}. Run `python data/split_data.py` after placing "
-            "`season-*.csv` files in `data/raw/`, then rerun this command."
+            "`season-*.csv` files in `data/raw/premier-league/`, then rerun this command."
         )
     return paths
 

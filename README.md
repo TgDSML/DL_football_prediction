@@ -6,7 +6,7 @@ Pre-match football match outcome prediction from team form sequences using class
 
 ```text
 data/
-  raw/              # Original datasets
+  raw/premier-league/ # Downloaded source season CSVs
   raw/splits/       # Chronological raw train/val/test CSVs
   interim/          # Legacy/intermediate experiments
   processed/        # Generated model-ready datasets
@@ -69,13 +69,25 @@ raw season CSVs
 -> ML / RNN / GRU experiments
 ```
 
-1. Place source season CSVs in `data/raw/`.
+1. Download the source season CSVs:
+
+```powershell
+python data\download_data.py
+```
+
+This downloads and validates Premier League `season-*.csv` files into:
+
+```text
+data/raw/premier-league/
+```
+
+You can also place source season CSVs there manually.
 
 Expected filenames use the existing `season-*.csv` convention, for example:
 
 ```text
-data/raw/season-0001.csv
-data/raw/season-0102.csv
+data/raw/premier-league/season-0001.csv
+data/raw/premier-league/season-0102.csv
 ```
 
 2. Create the chronological raw train/validation/test splits:
