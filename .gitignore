@@ -71,3 +71,9 @@ splits
 premier-league
 *csv
 *.joblib
+*pkl
+*configs.json
+*.npz
+*.json
+*pth
+*pt
