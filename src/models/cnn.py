@@ -1,7 +1,7 @@
 """
 CNN models for football match prediction.
 
-Expected alignment with dataset_cnn.py:
+Expected alignment with dataset_cnn.py and canonical sequence artifacts:
 
 - 1D CNN:
     load use_cnn_format=True
@@ -29,7 +29,7 @@ class Conv1DMatchPredictor(nn.Module):
     Expected input:
         x.shape == (batch_size, num_features, sequence_length)
 
-    This matches sequences_cnn produced by the loader when use_cnn_format=True.
+    This matches canonical X transposed by the loader when use_cnn_format=True.
     """
 
     def __init__(

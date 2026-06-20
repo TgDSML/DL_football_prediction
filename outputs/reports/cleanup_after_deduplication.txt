@@ -1,0 +1,168 @@
+Cleanup After Deduplication
+===========================
+
+Date
+----
+2026-06-20
+
+Scope
+-----
+Controlled cleanup based on outputs/reports/pipeline_deduplication_and_leakage_audit.txt.
+Selected milestone reports and generated audit reports were not removed.
+Current canonical training scripts were not removed.
+
+
+Files Removed
+-------------
+- models/ml_models.py
+  - Removed because no active imports/usages were found.
+  - Superseded by src/models/ml_baselines.py.
+
+- models/baseline_model.py
+  - Removed because no active imports/usages were found.
+  - Superseded by the dummy baseline inside src/models/ml_baselines.py.
+
+- data/processed/raw_sequence_engineering.py
+  - Removed after migrating active raw CNN/CNN+LSTM script constants from
+    data/processed/sequences_leakage_safe to data/processed/sequences.
+  - Superseded by src/features/sequences.py and scripts/build_sequences.py.
+
+- data/processed/sequence_engineering.py
+  - Removed after migrating src/dataset_cnn.py to load canonical sequence
+    artifacts from scripts/build_sequences.py.
+  - Superseded by src/features/sequences.py and scripts/build_sequences.py.
+
+- data/processed/split_for_ml.py
+  - Removed because no active imports/usages were found.
+  - Superseded by canonical processed split loading through src/utils/data_utils.py.
+
+
+Files Kept And Why
+------------------
+- src/models/ml_baselines.py
+  - Canonical ML baseline implementation.
+
+- src/features/sequences.py
+  - Canonical sequence builder implementation.
+
+- scripts/build_sequences.py
+  - Canonical sequence builder CLI.
+
+- src/dataset_cnn.py
+  - Kept because active CNN scripts import it.
+  - Updated to load canonical home_away sequence artifacts from
+    data/processed/sequences instead of old k_*_sequences artifacts.
+
+- src/raw_dataset_cnn.py
+  - Kept because active raw CNN/CNN+LSTM scripts import it.
+  - Updated documentation and default example path to canonical sequence output.
+
+- raw_plus_rolling mode in src/features/sequences.py
+  - Kept as optional, not default.
+
+
+Imports And References Updated
+------------------------------
+- src/dataset_cnn.py
+  - Now expects canonical NPZ keys X/y/feature_names.
+  - Accepts data/processed and resolves it to data/processed/sequences.
+  - Uses home_away/home_away_seq{N} naming from scripts/build_sequences.py.
+  - Transposes canonical X to (N, F, k) when use_cnn_format=True.
+
+- src/raw_dataset_cnn.py
+  - Documentation now points to scripts/build_sequences.py.
+  - __main__ example now uses data/processed/sequences.
+
+- scripts/cnn_raw_logic.py
+- scripts/cnn_raw_sweep.py
+- scripts/raw_cnn_sweep_lr_dropout_batchsize.py
+- scripts/train_cnn_lstm.py
+- scripts/train_cnn_lstm_2.py
+  - DATA_DIR changed from data/processed/sequences_leakage_safe to
+    data/processed/sequences.
+
+- scripts/train_cnn_1d.py
+  - Header documentation updated to describe canonical sequence artifacts.
+
+- src/models/cnn.py
+  - Loader-alignment comments updated to reference canonical sequence artifacts.
+
+
+README Updates
+--------------
+- README now states the canonical sequence builder as:
+  - src/features/sequences.py
+  - scripts/build_sequences.py
+- README now states generated sequence datasets are for RNN/GRU/CNN experiments.
+- README now states raw home_away is the default sequence representation.
+- README now states raw_plus_rolling is optional and not the default pipeline.
+- README now notes CNN and CNN+LSTM scripts load canonical sequence artifacts
+  through src/dataset_cnn.py or src/raw_dataset_cnn.py.
+
+
+Stale Reference Search
+----------------------
+Searched the repository for:
+- sequence_engineering
+- raw_sequence_engineering
+- sequences_leakage_safe
+- split_for_ml
+- models.ml_models
+- baseline_model
+- X_train.csv
+- k_3_train_sequences / k_5_train_sequences / k_10_train_sequences
+- sequences_cnn
+
+Result: no remaining matches after cleanup.
+
+
+Verification
+------------
+pytest -q:
+- Passed.
+- 19 passed in 2.87s.
+
+python -m compileall src scripts:
+- Passed.
+- src/dataset_cnn.py, src/raw_dataset_cnn.py, src/models/cnn.py, and the active
+  CNN/RNN training scripts compiled successfully.
+
+
+Final Git Status Summary
+------------------------
+Modified:
+- README.md
+- scripts/cnn_raw_logic.py
+- scripts/cnn_raw_sweep.py
+- scripts/raw_cnn_sweep_lr_dropout_batchsize.py
+- scripts/train_cnn_1d.py
+- scripts/train_cnn_lstm.py
+- scripts/train_cnn_lstm_2.py
+- src/dataset_cnn.py
+- src/models/cnn.py
+- src/raw_dataset_cnn.py
+
+Deleted:
+- data/processed/raw_sequence_engineering.py
+- data/processed/sequence_engineering.py
+- data/processed/split_for_ml.py
+- models/baseline_model.py
+- models/ml_models.py
+
+Created:
+- outputs/reports/cleanup_after_deduplication.txt
+  - This report exists on disk. It does not appear in `git status --short`
+    because outputs/reports/*.txt is ignored except selected milestone reports.
+
+
+Final Recommendation
+--------------------
+The cleaned main branch should use:
+- ML baseline: src/models/ml_baselines.py
+- Sequence builder: src/features/sequences.py through scripts/build_sequences.py
+- Default sequence input: raw home_away
+- Optional sequence input: raw_plus_rolling
+
+Before running migrated CNN/CNN+LSTM experiments, rebuild the needed sequence
+lengths with scripts/build_sequences.py because generated NPZ files are ignored
+and absent in a fresh checkout.

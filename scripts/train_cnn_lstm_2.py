@@ -28,7 +28,7 @@ from src.models.cnn_lstm_2 import CNNLSTMMatchPredictor
 SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-DATA_DIR = Path("data/processed/sequences_leakage_safe")
+DATA_DIR = Path("data/processed/sequences")
 OUTPUT_DIR = Path("artifacts") / "cnn_lstm_2"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

@@ -39,7 +39,7 @@ class CNNSequenceDataset(Dataset):
 
 class CNNDataModule:
     """
-    Loader for leakage-safe sequence files produced by raw_sequence_engineering.py
+    Loader for leakage-safe sequence files produced by scripts/build_sequences.py.
 
     Expected files:
       home_away_seq10_train.npz
@@ -268,7 +268,7 @@ def load_cnn_data(
 
 
 if __name__ == "__main__":
-    data_dir = Path("data/processed/sequences_leakage_safe")
+    data_dir = Path("data/processed/sequences")
 
     train_loader, val_loader, test_loader, module = load_cnn_data(
         data_dir=data_dir,

@@ -1,8 +1,8 @@
 """
-Data loading utilities for CNN sequences.
+Data loading utilities for CNN models over canonical sequence artifacts.
 
-Loads pre-processed sequences from sequence_engineering.py
-and provides PyTorch DataLoaders.
+The canonical sequence files are produced by scripts/build_sequences.py through
+src/features/sequences.py.
 """
 
 from pathlib import Path
@@ -50,16 +50,11 @@ class CNNDataModule:
     """
     Data loading orchestrator for CNN training.
 
-    Expected structure from your current sequence engineering script:
-    - NPZ files saved beside sequence_engineering.py:
-        k_3_train_sequences.npz
-        k_3_val_sequences.npz
-        k_3_test_sequences.npz
-        ...
-    - Metadata saved under:
-        artifacts/cnn/k_3/train_metadata.csv
-        artifacts/cnn/k_3/val_metadata.csv
-        artifacts/cnn/k_3/test_metadata.csv
+    Expected files under data/processed/sequences:
+        home_away_train.npz
+        home_away_val.npz
+        home_away_test.npz
+        home_away_seq10_train.npz
         ...
     """
 
@@ -67,67 +62,87 @@ class CNNDataModule:
         self,
         data_dir: str | Path,
         sequence_length: int,
+        variant: str = "home_away",
         batch_size: int = 32,
         num_workers: int = 0,
         normalize: bool = True,
         use_cnn_format: bool = True,
         eps: float = 1e-8,
+        load_metadata: bool = True,
     ) -> None:
         """
         Args:
-            data_dir: Directory where the NPZ files live, i.e. the script directory
-            sequence_length: One of 3, 5, 10
+            data_dir: Directory containing canonical NPZ files. Passing
+                data/processed is also accepted and resolves to
+                data/processed/sequences.
+            sequence_length: Sequence length used by scripts/build_sequences.py.
+            variant: Canonical sequence variant, usually home_away.
             batch_size: Batch size for DataLoaders
             num_workers: Number of workers for DataLoader
             normalize: Whether to normalize sequences
-            use_cnn_format: If True load 'sequences_cnn' with shape (N, F, k),
-                            else load 'sequences' with shape (N, k, F)
+            use_cnn_format: If True transpose X to (N, F, k), else keep
+                canonical X as (N, k, F).
             eps: Small constant to avoid divide-by-zero
         """
-        self.data_dir = Path(data_dir)
+        requested_dir = Path(data_dir)
+        if requested_dir.name == "processed":
+            requested_dir = requested_dir / "sequences"
+        self.data_dir = requested_dir
         self.sequence_length = sequence_length
+        self.variant = variant
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.normalize = normalize
         self.use_cnn_format = use_cnn_format
         self.eps = eps
-
-        self.project_root = self.data_dir.parent.parent.parent
-        self.metadata_dir = self.project_root / "artifacts" / "cnn" / f"k_{self.sequence_length}"
+        self.load_metadata = load_metadata
 
         self.train_dataset = None
         self.val_dataset = None
         self.test_dataset = None
-
         self.normalizer = None
+        self.feature_names = None
+
+    @property
+    def file_stem(self) -> str:
+        if self.sequence_length == 5:
+            return self.variant
+        return f"{self.variant}_seq{self.sequence_length}"
 
     def _npz_path(self, split_name: str) -> Path:
-        return self.data_dir / f"k_{self.sequence_length}_{split_name}_sequences.npz"
+        return self.data_dir / f"{self.file_stem}_{split_name}.npz"
 
     def _metadata_path(self, split_name: str) -> Path:
-        return self.metadata_dir / f"{split_name}_metadata.csv"
+        return self.data_dir / f"{self.file_stem}_{split_name}_metadata.csv"
 
     def load_split(self, split_name: str = "train") -> CNNSequenceDataset:
-        """
-        Load one split using your current naming convention.
-        """
         seq_file = self._npz_path(split_name)
         meta_file = self._metadata_path(split_name)
 
         if not seq_file.exists():
-            raise FileNotFoundError(f"Sequence file not found: {seq_file}")
+            raise FileNotFoundError(
+                f"Sequence file not found: {seq_file}. Build it with "
+                f"`python scripts/build_sequences.py --sequence-length "
+                f"{self.sequence_length} --variants {self.variant}`."
+            )
 
-        data = np.load(seq_file)
+        with np.load(seq_file, allow_pickle=False) as data:
+            expected_keys = {"X", "y"}
+            if not expected_keys.issubset(set(data.files)):
+                raise KeyError(
+                    f"Expected keys {expected_keys} in {seq_file}, found {list(data.files)}"
+                )
 
-        array_key = "sequences_cnn" if self.use_cnn_format else "sequences"
-        if array_key not in data:
-            raise KeyError(f"Expected key '{array_key}' in {seq_file}, found keys: {list(data.keys())}")
+            sequences = data["X"]
+            labels = data["y"]
+            if "feature_names" in data and self.feature_names is None:
+                self.feature_names = [str(feature) for feature in data["feature_names"]]
 
-        sequences = data[array_key]
-        labels = data["labels"]
+        if self.use_cnn_format:
+            sequences = np.transpose(sequences, (0, 2, 1))
 
         metadata = None
-        if meta_file.exists():
+        if self.load_metadata and meta_file.exists():
             metadata = pd.read_csv(meta_file)
 
         return CNNSequenceDataset(sequences, labels, metadata)
@@ -135,7 +150,8 @@ class CNNDataModule:
     def setup(self):
         print(f"Loading CNN sequences for k={self.sequence_length}...")
         print(f"  NPZ dir: {self.data_dir}")
-        print(f"  Metadata dir: {self.metadata_dir}")
+        print(f"  Variant: {self.variant}")
+        print(f"  CNN format: {self.use_cnn_format}")
 
         self.train_dataset = self.load_split("train")
         print(f"  Train: {len(self.train_dataset)} samples")
@@ -262,21 +278,24 @@ class CNNDataModule:
 def load_cnn_data(
     data_dir: str | Path,
     sequence_length: int,
+    variant: str = "home_away",
     batch_size: int = 32,
     normalize: bool = True,
     use_cnn_format: bool = True,
     num_workers: int = 0,
+    load_metadata: bool = True,
 ) -> tuple[DataLoader, DataLoader | None, DataLoader | None]:
     """
     Convenience function to load CNN data.
 
     Args:
-        data_dir: Directory containing files like k_5_train_sequences.npz
+        data_dir: Directory containing canonical files like home_away_train.npz
         sequence_length: One of 3, 5, 10
+        variant: Canonical sequence variant, usually home_away
         batch_size: Batch size
         normalize: Whether to normalize
-        use_cnn_format: True -> load sequences_cnn (N, F, k),
-                        False -> load sequences (N, k, F)
+        use_cnn_format: True -> transpose X to (N, F, k),
+                        False -> keep X as (N, k, F)
         num_workers: DataLoader workers
 
     Returns:
@@ -285,10 +304,12 @@ def load_cnn_data(
     module = CNNDataModule(
         data_dir=data_dir,
         sequence_length=sequence_length,
+        variant=variant,
         batch_size=batch_size,
         num_workers=num_workers,
         normalize=normalize,
         use_cnn_format=use_cnn_format,
+        load_metadata=load_metadata,
     )
     module.setup()
 

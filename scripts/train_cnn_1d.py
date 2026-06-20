@@ -2,9 +2,9 @@
 CNN training script for football match prediction.
 
 
-Matches the updated pipeline:
-- sequence_engineering.py creates k_3 / k_5 / k_10 datasets
-- dataset_cnn.py loads either sequences or sequences_cnn
+Matches the canonical pipeline:
+- scripts/build_sequences.py creates home_away sequence datasets
+- dataset_cnn.py loads canonical X/y arrays and transposes for CNNs when needed
 - cnn.py defines conv1d / conv2d / hybrid models with explicit shapes
 """
 
